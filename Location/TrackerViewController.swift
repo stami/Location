@@ -21,6 +21,8 @@ class TrackerViewController: UIViewController {
     var locationManager: CLLocationManager = CLLocationManager()
     var locations = [CLLocation]()
     
+    let stopwatch = Stopwatch()
+    
     var distance: CLLocationDistance = 0
     var averageSpeed: Double = 0
     var currentSpeed: Double = 0
@@ -51,12 +53,24 @@ class TrackerViewController: UIViewController {
         isTracking = true
         startStopButton.setTitle("Stop Tracking", forState: .Normal)
         startStopButton.backgroundColor = UIColor(red: 0.75, green: 0, blue: 0, alpha: 1)
+        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "eachSecond:", userInfo: nil, repeats: true)
+        stopwatch.start()
     }
     
     func stopTracking() {
         isTracking = false
         startStopButton.setTitle("Start Tracking", forState: .Normal)
         startStopButton.backgroundColor = UIColor(red: 0, green: 0.75, blue: 0, alpha: 1)
+        stopwatch.stop()
+    }
+    
+    // Called each and every second to update timerLabel
+    func eachSecond(timer: NSTimer) {
+        if stopwatch.isRunning {
+            timerLabel.text = stopwatch.elapsedAsString
+        } else {
+            timer.invalidate()
+        }
     }
     
     func resetExercise() {
@@ -69,6 +83,7 @@ class TrackerViewController: UIViewController {
         averageSpeedLabel.text = "0.0"
     }
     
+    // Get speed between two locations
     func speed(previous: CLLocation, current: CLLocation) -> Double {
         let distance = previous.distanceFromLocation(current)
         let time = previous.timestamp.timeIntervalSince1970 - current.timestamp.timeIntervalSince1970
@@ -80,24 +95,19 @@ class TrackerViewController: UIViewController {
     }
     
     func saveExercise() {
-        
         if self.locations.isEmpty {
             print("No locations tracked.")
             return
         }
         
-        var location: Location
+        // Create simplified locations
         var locations = [Location]()
-        
         for loc in self.locations {
-            location = Location(latitude: loc.coordinate.latitude, longitude: loc.coordinate.longitude, timestamp: loc.timestamp)
-            locations.append(location)
+            locations.append(Location(latitude: loc.coordinate.latitude, longitude: loc.coordinate.longitude, timestamp: loc.timestamp))
         }
         
         exercises.append(Exercise(startingDate: locations.first!.timestamp, totalDistance: distance, averageSpeed: averageSpeed, weather: nil, description: "Kivaa juoksua", trace: locations))
-        
     }
-    
 
 }
 
@@ -114,8 +124,8 @@ extension TrackerViewController: CLLocationManagerDelegate {
         for location in locations {
             // debugPrint(location)
             
-            if location.horizontalAccuracy < 100 && isTracking {
-                debugPrint(location)
+            if location.horizontalAccuracy < 20 && isTracking {
+                // debugPrint(location)
                 
                 // Update current values
                 if self.locations.count > 0 {
