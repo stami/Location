@@ -11,88 +11,90 @@ import CoreLocation
 
 class TrackerViewController: UIViewController {
     
+    @IBOutlet weak var currentSpeedLabel: UILabel!
+    @IBOutlet weak var timerLabel: UILabel!
     @IBOutlet weak var distanceLabel: UILabel!
+    @IBOutlet weak var averageSpeedLabel: UILabel!
     
     @IBOutlet weak var startStopButton: UIButton!
     
     var locationManager: CLLocationManager = CLLocationManager()
     var locations = [CLLocation]()
+    
     var distance: CLLocationDistance = 0
+    var averageSpeed: Double = 0
+    var currentSpeed: Double = 0
     
     var isTracking: Bool = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.delegate = self
         locationManager.activityType = .Fitness
         // locationManager.distanceFilter = 10.0 // Movement treshold for new events
         locationManager.requestAlwaysAuthorization()
-        
     }
     
     @IBAction func startStopButtonPressed(sender: UIButton) {
         if !isTracking {
-            isTracking = true
-            startStopButton.setTitle("Stop Tracking", forState: .Normal)
-            startStopButton.backgroundColor = UIColor(red: 0.75, green: 0, blue: 0, alpha: 1)
+            resetExercise()
+            startTracking()
         } else {
-            isTracking = false
-            startStopButton.setTitle("Start Tracking", forState: .Normal)
-            startStopButton.backgroundColor = UIColor(red: 0, green: 0.75, blue: 0, alpha: 1)
-            
+            stopTracking()
             saveExercise()
-            locations.removeAll()
-            distance = 0
+        }
+    }
+    
+    func startTracking() {
+        isTracking = true
+        startStopButton.setTitle("Stop Tracking", forState: .Normal)
+        startStopButton.backgroundColor = UIColor(red: 0.75, green: 0, blue: 0, alpha: 1)
+    }
+    
+    func stopTracking() {
+        isTracking = false
+        startStopButton.setTitle("Start Tracking", forState: .Normal)
+        startStopButton.backgroundColor = UIColor(red: 0, green: 0.75, blue: 0, alpha: 1)
+    }
+    
+    func resetExercise() {
+        locations.removeAll()
+        currentSpeed = 0
+        distance = 0
+        averageSpeed = 0
+        currentSpeedLabel.text = "0.0"
+        distanceLabel.text = "0.0"
+        averageSpeedLabel.text = "0.0"
+    }
+    
+    func speed(previous: CLLocation, current: CLLocation) -> Double {
+        let distance = previous.distanceFromLocation(current)
+        let time = previous.timestamp.timeIntervalSince1970 - current.timestamp.timeIntervalSince1970
+        if time != 0 {
+            return abs(distance/time)
+        } else {
+            return 0
         }
     }
     
     func saveExercise() {
         
-        if locations.isEmpty {
+        if self.locations.isEmpty {
             print("No locations tracked.")
             return
         }
         
+        var location: Location
+        var locations = [Location]()
         
-        var previousLocation: CLLocation = locations.first!
-        var averageSpeed: Double = 0
-        var totalDistance: Double = 0
-        
-        
-        func speed(previous: CLLocation, current: CLLocation) -> Double {
-            let distance = previous.distanceFromLocation(current)
-            let time = previous.timestamp.timeIntervalSince1970 - current.timestamp.timeIntervalSince1970
-            if time != 0 {
-                return abs(distance/time)
-            } else {
-                return 0
-            }
+        for loc in self.locations {
+            location = Location(latitude: loc.coordinate.latitude, longitude: loc.coordinate.longitude, timestamp: loc.timestamp)
+            locations.append(location)
         }
         
-        
-        print("\n\n Statistics \n\n")
-        
-        for loc in locations {
-            print("Lat: \(loc.coordinate.latitude)")
-            print("Lon: \(loc.coordinate.longitude)")
-            print("Speed: \(loc.speed)")
-            print("Calculated speed: \(speed(previousLocation, current: loc))")
-           
-            averageSpeed += speed(previousLocation, current: loc)
-
-            print("cumulative avg speed: \(averageSpeed)")
-            
-            totalDistance += previousLocation.distanceFromLocation(loc)
-            
-            previousLocation = loc
-            
-        }
-        
-        averageSpeed /= Double(locations.count - 1)
-        
-        exercises.append(Exercise(startingDate: locations.first!.timestamp, totalDistance: totalDistance, averageSpeed: averageSpeed, weather: nil, description: "Kivaa juoksua", trace: locations))
+        exercises.append(Exercise(startingDate: locations.first!.timestamp, totalDistance: distance, averageSpeed: averageSpeed, weather: nil, description: "Kivaa juoksua", trace: locations))
         
     }
     
@@ -115,10 +117,16 @@ extension TrackerViewController: CLLocationManagerDelegate {
             if location.horizontalAccuracy < 100 && isTracking {
                 debugPrint(location)
                 
-                // Update distance
+                // Update current values
                 if self.locations.count > 0 {
                     distance += location.distanceFromLocation(self.locations.last!)
-                    distanceLabel.text = String(format: "%.2f", distance)
+                    distanceLabel.text = String(format: "%.2f", distance/1000) // meters to kilometers
+                    
+                    averageSpeed = distance / (location.timestamp.timeIntervalSince1970 - self.locations.first!.timestamp.timeIntervalSince1970)
+                    averageSpeedLabel.text = String(format: "%.1f", averageSpeed*3.6) // m/s to km/h
+                    
+                    currentSpeed = speed(self.locations.last!, current: location)
+                    currentSpeedLabel.text = String(format: "%.1f", currentSpeed*3.6) // m/s to km/h
                 }
                 
                 // Append location

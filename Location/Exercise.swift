@@ -23,7 +23,7 @@ struct Exercise {
     
     var description: String
     
-    var trace: [CLLocation]
+    var trace: [Location]
 
 }
 
@@ -31,4 +31,10 @@ struct Exercise {
 struct Weather {
     var temperature: Double
     var description: String
+}
+
+struct Location {
+    var latitude: Double
+    var longitude: Double
+    var timestamp: NSDate
 }
