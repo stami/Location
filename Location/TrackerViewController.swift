@@ -22,12 +22,14 @@ class TrackerViewController: UIViewController {
     var locations = [CLLocation]()
     
     let stopwatch = Stopwatch()
-    
+    var isTracking: Bool = false
+
     var distance: CLLocationDistance = 0
     var averageSpeed: Double = 0
     var currentSpeed: Double = 0
     
-    var isTracking: Bool = false
+    @IBOutlet weak var badSignalLabel: UILabel!
+    var badSignalCounter: Int = 0 // Used to inform user if GPS signal accuracy is too bad
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -124,24 +126,35 @@ extension TrackerViewController: CLLocationManagerDelegate {
         for location in locations {
             // debugPrint(location)
             
-            if location.horizontalAccuracy < 20 && isTracking {
-                // debugPrint(location)
+            if location.horizontalAccuracy < 20 {
+                //debugPrint(location)
                 
-                // Update current values
-                if self.locations.count > 0 {
-                    distance += location.distanceFromLocation(self.locations.last!)
-                    distanceLabel.text = String(format: "%.2f", distance/1000) // meters to kilometers
+                if isTracking {
+                    // Update current values
+                    if self.locations.count > 0 {
+                        distance += location.distanceFromLocation(self.locations.last!)
+                        distanceLabel.text = String(format: "%.2f", distance/1000) // meters to kilometers
+                        
+                        averageSpeed = distance / (location.timestamp.timeIntervalSince1970 - self.locations.first!.timestamp.timeIntervalSince1970)
+                        averageSpeedLabel.text = String(format: "%.1f", averageSpeed*3.6) // m/s to km/h
+                        
+                        currentSpeed = speed(self.locations.last!, current: location)
+                        currentSpeedLabel.text = String(format: "%.1f", currentSpeed*3.6) // m/s to km/h
+                    }
                     
-                    averageSpeed = distance / (location.timestamp.timeIntervalSince1970 - self.locations.first!.timestamp.timeIntervalSince1970)
-                    averageSpeedLabel.text = String(format: "%.1f", averageSpeed*3.6) // m/s to km/h
-                    
-                    currentSpeed = speed(self.locations.last!, current: location)
-                    currentSpeedLabel.text = String(format: "%.1f", currentSpeed*3.6) // m/s to km/h
+                    // Append location
+                    self.locations.append(location)
                 }
                 
-                // Append location
-                self.locations.append(location)
-                
+                // We have good accuracy, let's clear the warning
+                badSignalCounter = 0
+                badSignalLabel.hidden = true
+            } else {
+                badSignalCounter += 1
+                if badSignalCounter > 5 {
+                    // 5 bad locations in row needed to show the warning
+                    badSignalLabel.hidden = false
+                }
             }
         }
     }

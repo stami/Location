@@ -58,13 +58,13 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="m/s" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1BQ-pY-1On">
-                                <rect key="frame" x="182" y="154.5" width="39.5" height="29"/>
+                                <rect key="frame" x="182" y="154" width="39.5" height="29"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Avg. Speed (km/h)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mTB-SH-8L6">
-                                <rect key="frame" x="177.5" y="319" width="126.5" height="18"/>
+                                <rect key="frame" x="177" y="319" width="126.5" height="18"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -74,15 +74,21 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00:00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VaD-XE-mrt">
+                                <rect key="frame" x="12" y="243" width="210.5" height="60"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="50"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="0.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dG6-on-EK0">
                                 <rect key="frame" x="12" y="92" width="162.5" height="108"/>
                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="90"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00:00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VaD-XE-mrt">
-                                <rect key="frame" x="12" y="243" width="210.5" height="60"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="50"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Poor GPS Signal ⚠️ " textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PAM-b4-d9t">
+                                <rect key="frame" x="189" y="77" width="115" height="15"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -99,6 +105,7 @@
                             <constraint firstAttribute="leadingMargin" secondItem="bEn-qw-DGL" secondAttribute="leading" id="9xx-j7-fHQ"/>
                             <constraint firstAttribute="leadingMargin" secondItem="Yyb-Yy-CHU" secondAttribute="leading" id="Bjk-8N-cRu"/>
                             <constraint firstItem="VaD-XE-mrt" firstAttribute="top" secondItem="DXo-H8-k9N" secondAttribute="bottom" constant="-2" id="BmQ-o1-AZA"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="PAM-b4-d9t" secondAttribute="trailing" id="IQ4-Wc-D3T"/>
                             <constraint firstItem="bEn-qw-DGL" firstAttribute="top" secondItem="VaD-XE-mrt" secondAttribute="bottom" constant="16" id="J3u-ep-PK0"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Yyb-Yy-CHU" secondAttribute="bottom" constant="20" id="Km8-ac-H1g"/>
                             <constraint firstItem="DXo-H8-k9N" firstAttribute="leading" secondItem="VaD-XE-mrt" secondAttribute="leading" id="On8-Hr-7rX"/>
@@ -107,6 +114,7 @@
                             <constraint firstItem="Alc-NC-hBd" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="13" id="W1D-ME-6bz"/>
                             <constraint firstItem="Yyb-Yy-CHU" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Wn9-Pd-3GO"/>
                             <constraint firstAttribute="leadingMargin" secondItem="gsN-kW-0eg" secondAttribute="leading" id="d0K-lW-SkB"/>
+                            <constraint firstItem="PAM-b4-d9t" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="13" id="eFj-dc-dcB"/>
                             <constraint firstItem="VaD-XE-mrt" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-4" id="iH1-cJ-A4q"/>
                             <constraint firstItem="Yyb-Yy-CHU" firstAttribute="top" secondItem="gsN-kW-0eg" secondAttribute="bottom" constant="16" id="iJi-Xh-fFG"/>
                             <constraint firstItem="dG6-on-EK0" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-4" id="lGu-ar-mC8"/>
@@ -127,6 +135,7 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
                         <outlet property="averageSpeedLabel" destination="uXh-Jm-H2Z" id="yB5-Yy-Q2e"/>
+                        <outlet property="badSignalLabel" destination="PAM-b4-d9t" id="T74-1B-RfI"/>
                         <outlet property="currentSpeedLabel" destination="dG6-on-EK0" id="nG3-Sl-jcf"/>
                         <outlet property="distanceLabel" destination="gsN-kW-0eg" id="Ocg-ZH-0Y2"/>
                         <outlet property="startStopButton" destination="Yyb-Yy-CHU" id="ZcA-ev-4Zm"/>
