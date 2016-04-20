@@ -110,6 +110,13 @@ class TrackerViewController: UIViewController {
         
         exercises.append(Exercise(startingDate: locations.first!.timestamp, totalDistance: distance, averageSpeed: averageSpeed, weather: nil, description: "Kivaa juoksua", trace: locations))
     }
+    
+    
+    // MARK: - Navigation
+    @IBAction func unwindToTrackerViewController(segue:UIStoryboardSegue) {
+        //print("unwindToTrackerViewController")
+    }
+    
 
 }
 

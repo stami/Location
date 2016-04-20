@@ -12,6 +12,7 @@
 		885566021CC7B9C50055C15D /* LogDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885566011CC7B9C50055C15D /* LogDetailsViewController.swift */; };
 		885566041CC7BEC60055C15D /* ExerciseLogTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885566031CC7BEC60055C15D /* ExerciseLogTableViewCell.swift */; };
 		885566061CC7F70A0055C15D /* Stopwatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885566051CC7F70A0055C15D /* Stopwatch.swift */; };
+		885566081CC805EA0055C15D /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885566071CC805EA0055C15D /* MapViewController.swift */; };
 		88E448421CC650E900E34CC3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E448411CC650E900E34CC3 /* AppDelegate.swift */; };
 		88E448441CC650E900E34CC3 /* TrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E448431CC650E900E34CC3 /* TrackerViewController.swift */; };
 		88E448471CC650E900E34CC3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 88E448451CC650E900E34CC3 /* Main.storyboard */; };
@@ -36,6 +37,7 @@
 		885566011CC7B9C50055C15D /* LogDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogDetailsViewController.swift; sourceTree = "<group>"; };
 		885566031CC7BEC60055C15D /* ExerciseLogTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseLogTableViewCell.swift; sourceTree = "<group>"; };
 		885566051CC7F70A0055C15D /* Stopwatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stopwatch.swift; sourceTree = "<group>"; };
+		885566071CC805EA0055C15D /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		88E4483E1CC650E900E34CC3 /* Location.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Location.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		88E448411CC650E900E34CC3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		88E448431CC650E900E34CC3 /* TrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerViewController.swift; sourceTree = "<group>"; };
@@ -89,6 +91,7 @@
 			children = (
 				88E448451CC650E900E34CC3 /* Main.storyboard */,
 				88E448431CC650E900E34CC3 /* TrackerViewController.swift */,
+				885566071CC805EA0055C15D /* MapViewController.swift */,
 				885565FF1CC7B9A80055C15D /* LogsTableViewController.swift */,
 				885566011CC7B9C50055C15D /* LogDetailsViewController.swift */,
 				885566051CC7F70A0055C15D /* Stopwatch.swift */,
@@ -221,6 +224,7 @@
 				88E448421CC650E900E34CC3 /* AppDelegate.swift in Sources */,
 				885566061CC7F70A0055C15D /* Stopwatch.swift in Sources */,
 				885565FA1CC79C0D0055C15D /* Exercise.swift in Sources */,
+				885566081CC805EA0055C15D /* MapViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
