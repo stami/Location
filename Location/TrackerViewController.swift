@@ -9,7 +9,7 @@
 import UIKit
 import CoreLocation
 
-class ViewController: UIViewController {
+class TrackerViewController: UIViewController {
     
     @IBOutlet weak var latitudeLabel: UILabel!
     @IBOutlet weak var longitudeLabel: UILabel!
@@ -47,24 +47,33 @@ class ViewController: UIViewController {
             startStopButton.setTitle("Start Tracking", forState: .Normal)
             startStopButton.backgroundColor = UIColor(red: 0, green: 0.75, blue: 0, alpha: 1)
             
-            printStats()
+            saveExercise()
         }
     }
     
-    func printStats() {
+    func saveExercise() {
+        
         if locations.isEmpty {
             print("No locations tracked.")
             return
         }
         
+        
         var previousLocation: CLLocation = locations.first!
+        var averageSpeed: Double = 0
+        var totalDistance: Double = 0
         
         
         func speed(loc1: CLLocation, loc2: CLLocation) -> Double {
             let distance = loc1.distanceFromLocation(loc2)
             let time = loc1.timestamp.timeIntervalSince1970 - loc2.timestamp.timeIntervalSince1970
-            return abs(distance/time)
+            if time != 0 {
+                return abs(distance/time)
+            } else {
+                return 0
+            }
         }
+        
         
         print("\n\n Statistics \n\n")
         
@@ -73,18 +82,28 @@ class ViewController: UIViewController {
             print("Lon: \(loc.coordinate.longitude)")
             print("Speed: \(loc.speed)")
             print("Calculated speed: \(speed(previousLocation, loc2: loc))")
+           
+            averageSpeed += speed(previousLocation, loc2: loc)
+
+            print("cumulative avg speed: \(averageSpeed)")
             
+            totalDistance += previousLocation.distanceFromLocation(loc)
+            
+            previousLocation = loc
             
         }
         
-
+        averageSpeed /= Double(locations.count - 1)
+        
+        exercises.append(Exercise(startingDate: locations.first!.timestamp, totalDistance: totalDistance, averageSpeed: averageSpeed, weather: nil, description: "Kivaa juoksua", trace: locations))
+        
     }
     
 
 }
 
 // MARK: - CLLocationManagerDelegate
-extension ViewController: CLLocationManagerDelegate {
+extension TrackerViewController: CLLocationManagerDelegate {
     
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         if status == .AuthorizedAlways || status == .AuthorizedWhenInUse {

@@ -7,8 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		885565FA1CC79C0D0055C15D /* Exercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885565F91CC79C0D0055C15D /* Exercise.swift */; };
+		885566001CC7B9A80055C15D /* LogsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885565FF1CC7B9A80055C15D /* LogsTableViewController.swift */; };
+		885566021CC7B9C50055C15D /* LogDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885566011CC7B9C50055C15D /* LogDetailsViewController.swift */; };
+		885566041CC7BEC60055C15D /* ExerciseLogTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885566031CC7BEC60055C15D /* ExerciseLogTableViewCell.swift */; };
 		88E448421CC650E900E34CC3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E448411CC650E900E34CC3 /* AppDelegate.swift */; };
-		88E448441CC650E900E34CC3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E448431CC650E900E34CC3 /* ViewController.swift */; };
+		88E448441CC650E900E34CC3 /* TrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E448431CC650E900E34CC3 /* TrackerViewController.swift */; };
 		88E448471CC650E900E34CC3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 88E448451CC650E900E34CC3 /* Main.storyboard */; };
 		88E448491CC650E900E34CC3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 88E448481CC650E900E34CC3 /* Assets.xcassets */; };
 		88E4484C1CC650E900E34CC3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 88E4484A1CC650E900E34CC3 /* LaunchScreen.storyboard */; };
@@ -26,9 +30,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		885565F91CC79C0D0055C15D /* Exercise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Exercise.swift; sourceTree = "<group>"; };
+		885565FF1CC7B9A80055C15D /* LogsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogsTableViewController.swift; sourceTree = "<group>"; };
+		885566011CC7B9C50055C15D /* LogDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogDetailsViewController.swift; sourceTree = "<group>"; };
+		885566031CC7BEC60055C15D /* ExerciseLogTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseLogTableViewCell.swift; sourceTree = "<group>"; };
 		88E4483E1CC650E900E34CC3 /* Location.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Location.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		88E448411CC650E900E34CC3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		88E448431CC650E900E34CC3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		88E448431CC650E900E34CC3 /* TrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerViewController.swift; sourceTree = "<group>"; };
 		88E448461CC650E900E34CC3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		88E448481CC650E900E34CC3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		88E4484B1CC650E900E34CC3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -77,10 +85,14 @@
 		88E448401CC650E900E34CC3 /* Location */ = {
 			isa = PBXGroup;
 			children = (
-				88E448411CC650E900E34CC3 /* AppDelegate.swift */,
-				88E448431CC650E900E34CC3 /* ViewController.swift */,
 				88E448451CC650E900E34CC3 /* Main.storyboard */,
+				88E448431CC650E900E34CC3 /* TrackerViewController.swift */,
+				885565FF1CC7B9A80055C15D /* LogsTableViewController.swift */,
+				885566011CC7B9C50055C15D /* LogDetailsViewController.swift */,
+				885565F91CC79C0D0055C15D /* Exercise.swift */,
+				885566031CC7BEC60055C15D /* ExerciseLogTableViewCell.swift */,
 				88E448481CC650E900E34CC3 /* Assets.xcassets */,
+				88E448411CC650E900E34CC3 /* AppDelegate.swift */,
 				88E4484A1CC650E900E34CC3 /* LaunchScreen.storyboard */,
 				88E4484D1CC650E900E34CC3 /* Info.plist */,
 			);
@@ -199,8 +211,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				88E448441CC650E900E34CC3 /* ViewController.swift in Sources */,
+				885566041CC7BEC60055C15D /* ExerciseLogTableViewCell.swift in Sources */,
+				885566001CC7B9A80055C15D /* LogsTableViewController.swift in Sources */,
+				885566021CC7B9C50055C15D /* LogDetailsViewController.swift in Sources */,
+				88E448441CC650E900E34CC3 /* TrackerViewController.swift in Sources */,
 				88E448421CC650E900E34CC3 /* AppDelegate.swift in Sources */,
+				885565FA1CC79C0D0055C15D /* Exercise.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -392,6 +408,7 @@
 				88E4485D1CC650E900E34CC3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		88E4485E1CC650E900E34CC3 /* Build configuration list for PBXNativeTarget "LocationTests" */ = {
 			isa = XCConfigurationList;
@@ -400,6 +417,7 @@
 				88E448601CC650E900E34CC3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

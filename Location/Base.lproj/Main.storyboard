@@ -9,7 +9,7 @@
         <!--Location-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Location" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="TrackerViewController" customModule="Location" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -169,35 +169,47 @@
         <!--Logs-->
         <scene sceneID="gCh-9j-V9k">
             <objects>
-                <tableViewController id="RcI-DB-LNl" sceneMemberID="viewController">
+                <tableViewController id="RcI-DB-LNl" customClass="LogsTableViewController" customModule="Location" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="XcX-Ud-BXV">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="2pM-A8-N7U">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ExerciseLogCell" id="2pM-A8-N7U" customClass="ExerciseLogTableViewCell" customModule="Location" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="92" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2pM-A8-N7U" id="Xvh-2K-uKH">
                                     <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="20.04.2016" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b30-3E-nSD">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="20.04.2016" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b30-3E-nSD">
                                             <rect key="frame" x="8" y="11" width="87" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="54 km" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WRX-3D-sRN">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="54 km" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WRX-3D-sRN">
                                             <rect key="frame" x="238" y="11" width="49" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstItem="WRX-3D-sRN" firstAttribute="top" secondItem="Xvh-2K-uKH" secondAttribute="topMargin" constant="3" id="FlM-Hg-uFG"/>
+                                        <constraint firstItem="b30-3E-nSD" firstAttribute="top" secondItem="Xvh-2K-uKH" secondAttribute="topMargin" constant="3" id="RdB-gg-Q4O"/>
+                                        <constraint firstAttribute="leadingMargin" secondItem="b30-3E-nSD" secondAttribute="leading" id="dyH-GO-dy6"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="WRX-3D-sRN" secondAttribute="bottom" constant="3.5" id="rQ2-6M-Amn"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="b30-3E-nSD" secondAttribute="bottom" constant="3.5" id="to2-vA-uJa"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="WRX-3D-sRN" secondAttribute="trailing" constant="33" id="RTv-Bb-fT1"/>
+                                </constraints>
                                 <connections>
-                                    <segue destination="OcU-KG-BC0" kind="show" id="yPl-Yv-vKy"/>
+                                    <outlet property="dateLabel" destination="b30-3E-nSD" id="Fpf-tM-E3f"/>
+                                    <outlet property="distanceLabel" destination="WRX-3D-sRN" id="AIb-4S-Jw7"/>
+                                    <segue destination="OcU-KG-BC0" kind="show" identifier="showExerciseDetailsSegue" id="yPl-Yv-vKy"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -215,7 +227,7 @@
         <!--20.04.2016-->
         <scene sceneID="pyG-C5-PNd">
             <objects>
-                <viewController id="OcU-KG-BC0" sceneMemberID="viewController">
+                <viewController id="OcU-KG-BC0" customClass="LogDetailsViewController" customModule="Location" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="mQk-bU-8pO"/>
                         <viewControllerLayoutGuide type="bottom" id="kA0-0H-7IO"/>
@@ -237,7 +249,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Stats" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rjh-EV-Wwn">
-                                <rect key="frame" x="20" y="130" width="40" height="21"/>
+                                <rect key="frame" x="20" y="206" width="40" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -248,10 +260,44 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Total Distance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Eh-xu-vLK">
+                                <rect key="frame" x="20" y="244" width="109" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ih1-HO-Geo">
+                                <rect key="frame" x="258" y="244" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rwW-qa-Ryl">
+                                <rect key="frame" x="258" y="273" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Average Speed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vwp-R8-aGu">
+                                <rect key="frame" x="20" y="273" width="116" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="leadingMargin" secondItem="4Eh-xu-vLK" secondAttribute="leading" id="6ZF-Ud-uaj"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Ih1-HO-Geo" secondAttribute="trailing" id="BOa-5t-rlW"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="rwW-qa-Ryl" secondAttribute="trailing" id="IDX-JO-l6W"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="vwp-R8-aGu" secondAttribute="leading" id="XKI-fA-3KW"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="20.04.2016" id="cRf-v9-l93"/>
+                    <connections>
+                        <outlet property="averageSpeedLabel" destination="rwW-qa-Ryl" id="6pi-Bq-0wj"/>
+                        <outlet property="totalDistanceLabel" destination="Ih1-HO-Geo" id="Q3p-Fc-cKz"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LoH-r6-g1b" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
