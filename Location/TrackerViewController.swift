@@ -11,11 +11,6 @@ import CoreLocation
 
 class TrackerViewController: UIViewController {
     
-    @IBOutlet weak var latitudeLabel: UILabel!
-    @IBOutlet weak var longitudeLabel: UILabel!
-    @IBOutlet weak var horizontalAccuracyLabel: UILabel!
-    @IBOutlet weak var altitudeLabel: UILabel!
-    @IBOutlet weak var verticalAccuracyLabel: UILabel!
     @IBOutlet weak var distanceLabel: UILabel!
     
     @IBOutlet weak var startStopButton: UIButton!
@@ -48,6 +43,8 @@ class TrackerViewController: UIViewController {
             startStopButton.backgroundColor = UIColor(red: 0, green: 0.75, blue: 0, alpha: 1)
             
             saveExercise()
+            locations.removeAll()
+            distance = 0
         }
     }
     
@@ -64,9 +61,9 @@ class TrackerViewController: UIViewController {
         var totalDistance: Double = 0
         
         
-        func speed(loc1: CLLocation, loc2: CLLocation) -> Double {
-            let distance = loc1.distanceFromLocation(loc2)
-            let time = loc1.timestamp.timeIntervalSince1970 - loc2.timestamp.timeIntervalSince1970
+        func speed(previous: CLLocation, current: CLLocation) -> Double {
+            let distance = previous.distanceFromLocation(current)
+            let time = previous.timestamp.timeIntervalSince1970 - current.timestamp.timeIntervalSince1970
             if time != 0 {
                 return abs(distance/time)
             } else {
@@ -81,9 +78,9 @@ class TrackerViewController: UIViewController {
             print("Lat: \(loc.coordinate.latitude)")
             print("Lon: \(loc.coordinate.longitude)")
             print("Speed: \(loc.speed)")
-            print("Calculated speed: \(speed(previousLocation, loc2: loc))")
+            print("Calculated speed: \(speed(previousLocation, current: loc))")
            
-            averageSpeed += speed(previousLocation, loc2: loc)
+            averageSpeed += speed(previousLocation, current: loc)
 
             print("cumulative avg speed: \(averageSpeed)")
             
@@ -127,12 +124,6 @@ extension TrackerViewController: CLLocationManagerDelegate {
                 // Append location
                 self.locations.append(location)
                 
-                // Show in labels
-                latitudeLabel.text = String(format: "%.4f", location.coordinate.latitude)
-                longitudeLabel.text = String(format: "%.4f", location.coordinate.longitude)
-                horizontalAccuracyLabel.text = String(format: "%.4f", location.horizontalAccuracy)
-                altitudeLabel.text = String(format: "%.4f", location.altitude)
-                verticalAccuracyLabel.text = String(format: "%.4f", location.verticalAccuracy)
             }
         }
     }
