@@ -13,6 +13,7 @@
 		885566041CC7BEC60055C15D /* ExerciseLogTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885566031CC7BEC60055C15D /* ExerciseLogTableViewCell.swift */; };
 		885566061CC7F70A0055C15D /* Stopwatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885566051CC7F70A0055C15D /* Stopwatch.swift */; };
 		885566081CC805EA0055C15D /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885566071CC805EA0055C15D /* MapViewController.swift */; };
+		8855660A1CC8DDF80055C15D /* ws.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 885566091CC8DDF80055C15D /* ws.framework */; };
 		88E448421CC650E900E34CC3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E448411CC650E900E34CC3 /* AppDelegate.swift */; };
 		88E448441CC650E900E34CC3 /* TrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E448431CC650E900E34CC3 /* TrackerViewController.swift */; };
 		88E448471CC650E900E34CC3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 88E448451CC650E900E34CC3 /* Main.storyboard */; };
@@ -38,6 +39,7 @@
 		885566031CC7BEC60055C15D /* ExerciseLogTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExerciseLogTableViewCell.swift; sourceTree = "<group>"; };
 		885566051CC7F70A0055C15D /* Stopwatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stopwatch.swift; sourceTree = "<group>"; };
 		885566071CC805EA0055C15D /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		885566091CC8DDF80055C15D /* ws.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ws.framework; path = Carthage/Build/iOS/ws.framework; sourceTree = "<group>"; };
 		88E4483E1CC650E900E34CC3 /* Location.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Location.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		88E448411CC650E900E34CC3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		88E448431CC650E900E34CC3 /* TrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerViewController.swift; sourceTree = "<group>"; };
@@ -55,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8855660A1CC8DDF80055C15D /* ws.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,6 +74,7 @@
 		88E448351CC650E900E34CC3 = {
 			isa = PBXGroup;
 			children = (
+				885566091CC8DDF80055C15D /* ws.framework */,
 				88E448401CC650E900E34CC3 /* Location */,
 				88E448551CC650E900E34CC3 /* LocationTests */,
 				88E4483F1CC650E900E34CC3 /* Products */,
@@ -124,6 +128,7 @@
 				88E4483A1CC650E900E34CC3 /* Sources */,
 				88E4483B1CC650E900E34CC3 /* Frameworks */,
 				88E4483C1CC650E900E34CC3 /* Resources */,
+				8855660B1CC8DE790055C15D /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -211,6 +216,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		8855660B1CC8DE790055C15D /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/ws.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Arrow.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/then.framework",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		88E4483A1CC650E900E34CC3 /* Sources */ = {
@@ -355,6 +380,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = Location/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = me.samulitamminen.Location;
@@ -366,6 +395,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = Location/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = me.samulitamminen.Location;

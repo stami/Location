@@ -1,0 +1,4 @@
+github "Alamofire/Alamofire" "3.2.1"
+github "s4cha/Arrow" "0.7.6"
+github "s4cha/then" "1.2.2"
+github "s4cha/ws" "1.1.5"

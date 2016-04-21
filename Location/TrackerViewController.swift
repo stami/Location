@@ -32,6 +32,8 @@ class TrackerViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        ws.logLevels = .CallsAndResponses
 
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.delegate = self
@@ -107,7 +109,11 @@ class TrackerViewController: UIViewController {
             locations.append(Location(latitude: loc.coordinate.latitude, longitude: loc.coordinate.longitude, timestamp: loc.timestamp))
         }
         
-        savedExercises.append(Exercise(startingDate: locations.first!.timestamp, totalDistance: distance, averageSpeed: averageSpeed, weather: nil, description: "Kivaa juoksua", trace: locations))
+        let newExercise = Exercise(startingDate: locations.first!.timestamp, totalDistance: distance, averageSpeed: averageSpeed, description: "Kivaa juoksua", trace: locations)
+        
+        newExercise.save()
+        
+        savedExercises.append(newExercise)
     }
     
     
