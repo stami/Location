@@ -14,27 +14,81 @@ class MapViewController: UIViewController {
 
     @IBOutlet weak var mapView: MKMapView!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    var timer = NSTimer()
+    
+    override func viewWillAppear(animated: Bool) {
+        updateMap(timer)
+        timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: "updateMap:", userInfo: nil, repeats: true)
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    override func viewWillDisappear(animated: Bool) {
+        timer.invalidate()
     }
-    */
+    
+    
+    func updateMap(timer: NSTimer) {
+        if currentExerciseLocations.count > 0 {
+            print("updateMap")
+            mapView.setRegion(mapRegion(), animated: true)
+            mapView.addOverlay(polyline())
+        }
+    }
+    
+    
+    func mapRegion() -> MKCoordinateRegion {
+        let initialLoc: CLLocation = currentExerciseLocations.first!
+        
+        var minLat = initialLoc.coordinate.latitude
+        var minLon = initialLoc.coordinate.longitude
+        var maxLat = minLat
+        var maxLon = minLon
+        
+        // Get the min and max coordinates
+        for location in currentExerciseLocations {
+            minLat = min(minLat, location.coordinate.latitude)
+            minLon = min(minLon, location.coordinate.longitude)
+            maxLat = max(maxLat, location.coordinate.latitude)
+            maxLon = max(maxLon, location.coordinate.longitude)
+        }
+        
+        return MKCoordinateRegion(
+            center: CLLocationCoordinate2D(latitude: (minLat + maxLat)/2,
+                longitude: (minLon + maxLon)/2),
+            span: MKCoordinateSpan(latitudeDelta: (maxLat - minLat)*1.1,
+                longitudeDelta: (maxLon - minLon)*1.1))
+    }
+    
+    
+    func polyline() -> MKPolyline {
+        var coords = [CLLocationCoordinate2D]()
+        
+        for location in currentExerciseLocations {
+            coords.append(location.coordinate)
+//            coords.append(CLLocationCoordinate2D(
+//                latitude: location.coordinate.latitude,
+//                longitude: location.coordinate.longitude))
+        }
+        
+        return MKPolyline(coordinates: &coords, count: currentExerciseLocations.count)
+    }
+
+}
+
+
+extension MapViewController: MKMapViewDelegate {
+    
+    func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer {
+        if overlay.isKindOfClass(MKPolyline) {
+            // return nil
+            print("Error: overlay is not kind of MKPolyline")
+        }
+        
+        let polyline = overlay as! MKPolyline
+        let renderer = MKPolylineRenderer(polyline: polyline)
+        renderer.strokeColor = UIColor.blackColor()
+        renderer.lineWidth = 3
+        return renderer
+    }
 
 }
 
