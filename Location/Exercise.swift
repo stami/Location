@@ -11,6 +11,7 @@ import CoreLocation
 
 
 var exercises = [Exercise]()
+var currentExerciseLocations = [CLLocation]()
 
 
 struct Exercise {

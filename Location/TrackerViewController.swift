@@ -19,7 +19,6 @@ class TrackerViewController: UIViewController {
     @IBOutlet weak var startStopButton: UIButton!
     
     var locationManager: CLLocationManager = CLLocationManager()
-    var locations = [CLLocation]()
     
     let stopwatch = Stopwatch()
     var isTracking: Bool = false
@@ -76,7 +75,7 @@ class TrackerViewController: UIViewController {
     }
     
     func resetExercise() {
-        locations.removeAll()
+        currentExerciseLocations.removeAll()
         currentSpeed = 0
         distance = 0
         averageSpeed = 0
@@ -97,14 +96,14 @@ class TrackerViewController: UIViewController {
     }
     
     func saveExercise() {
-        if self.locations.isEmpty {
+        if currentExerciseLocations.isEmpty {
             print("No locations tracked.")
             return
         }
         
         // Create simplified locations
         var locations = [Location]()
-        for loc in self.locations {
+        for loc in currentExerciseLocations {
             locations.append(Location(latitude: loc.coordinate.latitude, longitude: loc.coordinate.longitude, timestamp: loc.timestamp))
         }
         
@@ -138,19 +137,19 @@ extension TrackerViewController: CLLocationManagerDelegate {
                 
                 if isTracking {
                     // Update current values
-                    if self.locations.count > 0 {
-                        distance += location.distanceFromLocation(self.locations.last!)
+                    if currentExerciseLocations.count > 0 {
+                        distance += location.distanceFromLocation(currentExerciseLocations.last!)
                         distanceLabel.text = String(format: "%.2f", distance/1000) // meters to kilometers
                         
-                        averageSpeed = distance / (location.timestamp.timeIntervalSince1970 - self.locations.first!.timestamp.timeIntervalSince1970)
+                        averageSpeed = distance / (location.timestamp.timeIntervalSince1970 - currentExerciseLocations.first!.timestamp.timeIntervalSince1970)
                         averageSpeedLabel.text = String(format: "%.1f", averageSpeed*3.6) // m/s to km/h
                         
-                        currentSpeed = speed(self.locations.last!, current: location)
+                        currentSpeed = speed(currentExerciseLocations.last!, current: location)
                         currentSpeedLabel.text = String(format: "%.1f", currentSpeed*3.6) // m/s to km/h
                     }
                     
                     // Append location
-                    self.locations.append(location)
+                    currentExerciseLocations.append(location)
                 }
                 
                 // We have good accuracy, let's clear the warning
