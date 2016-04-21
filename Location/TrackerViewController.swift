@@ -36,7 +36,7 @@ class TrackerViewController: UIViewController {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.delegate = self
         locationManager.activityType = .Fitness
-        // locationManager.distanceFilter = 10.0 // Movement treshold for new events
+        // locationManager.distanceFilter = 1.0 // Movement treshold for new events
         locationManager.requestAlwaysAuthorization()
     }
     

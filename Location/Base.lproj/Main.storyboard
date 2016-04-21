@@ -57,14 +57,14 @@
                                     <action selector="startStopButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="yUr-df-vve"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="m/s" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1BQ-pY-1On">
-                                <rect key="frame" x="182" y="154" width="39.5" height="29"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="km/h" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1BQ-pY-1On">
+                                <rect key="frame" x="146" y="155" width="54" height="29"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Avg. Speed (km/h)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mTB-SH-8L6">
-                                <rect key="frame" x="177" y="319" width="126.5" height="18"/>
+                                <rect key="frame" x="177.5" y="319" width="126.5" height="18"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -80,8 +80,8 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="0.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dG6-on-EK0">
-                                <rect key="frame" x="12" y="92" width="162.5" height="108"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dG6-on-EK0">
+                                <rect key="frame" x="12" y="92" width="126.5" height="108"/>
                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="90"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -242,8 +242,14 @@
                                 <segue destination="var-j6-59E" kind="unwind" unwindAction="unwindToTrackerViewController:" id="XMF-ND-9j0"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="◉ Follow" id="UC4-GV-yJ0">
+                            <connections>
+                                <action selector="followMeButtonPressed:" destination="HP5-Xw-mZM" id="cbF-g6-y5d"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="followMeButton" destination="UC4-GV-yJ0" id="G2U-ek-pXV"/>
                         <outlet property="mapView" destination="QTi-SD-qrA" id="bC4-T0-leL"/>
                     </connections>
                 </viewController>
