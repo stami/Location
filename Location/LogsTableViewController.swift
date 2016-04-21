@@ -10,21 +10,6 @@ import UIKit
 
 class LogsTableViewController: UITableViewController {
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -35,7 +20,6 @@ class LogsTableViewController: UITableViewController {
         return exercises.count
     }
 
-    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("ExerciseLogCell", forIndexPath: indexPath) as! ExerciseLogTableViewCell
         
@@ -46,7 +30,7 @@ class LogsTableViewController: UITableViewController {
         let dateString = dateFormatter.stringFromDate(exercises[indexPath.row].startingDate)
         
         cell.dateLabel.text = dateString
-        cell.distanceLabel.text = String(format: "%.2f", exercises[indexPath.row].totalDistance) + " m"
+        cell.distanceLabel.text = String(format: "%.2f", exercises[indexPath.row].totalDistance / 1000) + " km"
 
         return cell
     }
