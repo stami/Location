@@ -10,7 +10,7 @@ import Foundation
 import CoreLocation
 
 
-var exercises = [Exercise]()
+var savedExercises = [Exercise]()
 var currentExerciseLocations = [CLLocation]()
 
 

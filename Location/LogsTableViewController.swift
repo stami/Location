@@ -17,7 +17,7 @@ class LogsTableViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return exercises.count
+        return savedExercises.count
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -27,10 +27,10 @@ class LogsTableViewController: UITableViewController {
         dateFormatter.dateFormat = "dd.MM.yyyy"
         //dateFormatter.dateStyle = .MediumStyle
         
-        let dateString = dateFormatter.stringFromDate(exercises[indexPath.row].startingDate)
+        let dateString = dateFormatter.stringFromDate(savedExercises[indexPath.row].startingDate)
         
         cell.dateLabel.text = dateString
-        cell.distanceLabel.text = String(format: "%.2f", exercises[indexPath.row].totalDistance / 1000) + " km"
+        cell.distanceLabel.text = String(format: "%.2f", savedExercises[indexPath.row].totalDistance / 1000) + " km"
 
         return cell
     }
@@ -82,7 +82,7 @@ class LogsTableViewController: UITableViewController {
             
             if let selectedCell = sender as? ExerciseLogTableViewCell {
                 let indexPath = tableView.indexPathForCell(selectedCell)!
-                let selectedExercise: Exercise = exercises[indexPath.row]
+                let selectedExercise: Exercise = savedExercises[indexPath.row]
                 detailViewController.exercise = selectedExercise
             }
         }

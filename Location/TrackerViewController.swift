@@ -107,7 +107,7 @@ class TrackerViewController: UIViewController {
             locations.append(Location(latitude: loc.coordinate.latitude, longitude: loc.coordinate.longitude, timestamp: loc.timestamp))
         }
         
-        exercises.append(Exercise(startingDate: locations.first!.timestamp, totalDistance: distance, averageSpeed: averageSpeed, weather: nil, description: "Kivaa juoksua", trace: locations))
+        savedExercises.append(Exercise(startingDate: locations.first!.timestamp, totalDistance: distance, averageSpeed: averageSpeed, weather: nil, description: "Kivaa juoksua", trace: locations))
     }
     
     
