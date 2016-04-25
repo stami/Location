@@ -8,7 +8,8 @@
 
 import Foundation
 import CoreLocation
-// ws
+
+import ws
 import Alamofire
 import Arrow
 import then
@@ -26,6 +27,8 @@ let ws = WS(apiUrl)
 
 struct Exercise {
     
+    var _id: String? // mongodb id
+    
     var startingDate: NSDate = NSDate()
     var totalDistance: Double = 0
     var averageSpeed: Double = 0
@@ -36,14 +39,18 @@ struct Exercise {
     
     func params() -> [String:AnyObject] {
         
+        // Dates to JSON
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        
         var paramTrace: [[String:AnyObject]] = []
         
         for location in trace {
-            paramTrace.append(["latitude": location.latitude, "longitude": location.longitude, "timestamp": location.timestamp])
+            paramTrace.append(["latitude": location.latitude, "longitude": location.longitude, "timestamp": dateFormatter.stringFromDate(location.timestamp)])
         }
         
         return [
-            "startingDate": startingDate,
+            "startingDate": dateFormatter.stringFromDate(startingDate),
             "totalDistance": totalDistance,
             "averageSpeed": averageSpeed,
             "description": description,
@@ -55,7 +62,8 @@ struct Exercise {
 
 extension Exercise : ArrowParsable {
     
-    init(json: JSON) {
+    mutating func deserialize(json: JSON) {
+        _id <-- json["_id.$oid"]
         startingDate <-- json["startingDate"]
         totalDistance <-- json["totalDistance"]
         averageSpeed <-- json["averageSpeed"]
@@ -67,19 +75,19 @@ extension Exercise : ArrowParsable {
 
 extension Exercise {
     static func list() -> Promise<[Exercise]> {
-        return ws.get("/exercises")
+        return ws.get("/"+apiKey)
     }
     
     func save() -> Promise<Exercise> {
-        return ws.post("/exercises"+apiKey, params: ["data": ["date": startingDate, "number": 123]])
+        return ws.post("/"+apiKey, params: params())
     }
     
     func update() -> Promise<Void> {
-        return ws.put("/exercises/\(startingDate.timeIntervalSince1970)", params: ["data": params()])
+        return ws.put("/\(_id!)"+apiKey, params: params())
     }
     
     func delete() -> Promise<Void> {
-        return ws.delete("/exercises/\(startingDate.timeIntervalSince1970)")
+        return ws.delete("/\(_id!)"+apiKey)
     }
 }
 

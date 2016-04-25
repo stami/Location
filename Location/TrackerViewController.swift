@@ -34,6 +34,12 @@ class TrackerViewController: UIViewController {
         super.viewDidLoad()
         
         ws.logLevels = .CallsAndResponses
+        ws.postParameterEncoding = .JSON
+        
+        // Load saved exercises from API
+        Exercise.list().then { loadedExercises in
+            savedExercises = loadedExercises
+        }
 
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.delegate = self
@@ -109,11 +115,11 @@ class TrackerViewController: UIViewController {
             locations.append(Location(latitude: loc.coordinate.latitude, longitude: loc.coordinate.longitude, timestamp: loc.timestamp))
         }
         
-        let newExercise = Exercise(startingDate: locations.first!.timestamp, totalDistance: distance, averageSpeed: averageSpeed, description: "Kivaa juoksua", trace: locations)
+        let newExercise = Exercise(_id: "", startingDate: locations.first!.timestamp, totalDistance: distance, averageSpeed: averageSpeed, description: "Kivaa juoksua", trace: locations)
         
-        newExercise.save()
-        
-        savedExercises.append(newExercise)
+        newExercise.save().then() { createdExercise in
+            savedExercises.append(createdExercise)
+        }
     }
     
     
