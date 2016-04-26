@@ -1,1 +1,2 @@
 github "s4cha/ws" "multipart"
+github "danielgindi/Charts" ~> 2.2.4

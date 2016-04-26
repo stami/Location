@@ -51,9 +51,7 @@ class LogsTableViewController: UITableViewController {
     // MARK: - Navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
-        if segue.identifier == "showExerciseDetailsSegue" {
-            let detailViewController = segue.destinationViewController as! LogDetailsViewController
-            
+        if segue.identifier == "showExerciseDetailsSegue" {            
             if let selectedCell = sender as? ExerciseLogTableViewCell {
                 let indexPath = tableView.indexPathForCell(selectedCell)!
                 currentExercise = savedExercises[indexPath.row]

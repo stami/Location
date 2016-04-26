@@ -21,7 +21,7 @@ Samuli
 Install dependencies (with [Carthage](https://github.com/Carthage/Carthage))
 
 ```
-carthage update
+carthage update --platform iOS
 ```
 
 Create ApiKeys.plist file
