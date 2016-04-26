@@ -38,6 +38,7 @@ class LogDetailsViewController: UIViewController {
             if let navigationVC = segue.destinationViewController as? UINavigationController,
                let destination = navigationVC.topViewController as? MapViewController {
                     destination.unwindDestination = "LogDetailsViewController"
+                    destination.followMe = false
             }
         }
     }

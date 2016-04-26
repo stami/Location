@@ -27,7 +27,15 @@ class MapViewController: UIViewController {
     @IBAction func followMeButtonPressed(sender: UIBarButtonItem) {
         toggleFollowMe()
     }
-    var followMe: Bool = true
+    var followMe: Bool = true {
+        didSet {
+            if followMe {
+                followMeButton.title = "◉ Follow"
+            } else {
+                followMeButton.title = "◎ Follow"
+            }
+        }
+    }
     
     
     var timer = NSTimer()
@@ -104,13 +112,7 @@ class MapViewController: UIViewController {
     
     
     func toggleFollowMe() {
-        if followMe {
-            followMeButton.title = "◎ Follow"
-            followMe = false
-        } else {
-            followMeButton.title = "◉ Follow"
-            followMe = true
-        }
+        followMe = !followMe
     }
 
 }
