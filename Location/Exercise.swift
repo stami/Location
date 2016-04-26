@@ -17,11 +17,11 @@ import then
 var savedExercises = [Exercise]()
 var currentExerciseLocations = [CLLocation]()
 
-// let apiUrl = "" // not in git repository
-// let apiKey = "&apiKey" + "" // not in git repository
 // I use mlab.com Data API for testing purposes
 // see http://docs.mlab.com/data-api/
-
+// Api Keys are stored in ApiKeys.plist (not in git repository)
+let apiUrl = valueForAPIKey("API_BASE_URL")
+let apiKey = "?apiKey=" + valueForAPIKey("API_KEY")
 
 let ws = WS(apiUrl)
 
