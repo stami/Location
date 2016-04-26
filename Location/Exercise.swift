@@ -93,7 +93,15 @@ extension Exercise {
 
 
 struct Location {
-    var latitude: Double
-    var longitude: Double
-    var timestamp: NSDate
+    var latitude: Double = 0
+    var longitude: Double = 0
+    var timestamp: NSDate = NSDate()
+}
+
+extension Location : ArrowParsable {
+    mutating func deserialize(json: JSON) {
+        latitude <-- json["latitude"]
+        longitude <-- json["longitude"]
+        timestamp <-- json["timestamp"]
+    }
 }

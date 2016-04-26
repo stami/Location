@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreLocation
+import Arrow
 
 class TrackerViewController: UIViewController {
     
@@ -33,8 +34,11 @@ class TrackerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        ws.logLevels = .CallsAndResponses
+        // Setup rest api parsing
+        // ws.logLevels = .CallsAndResponses
         ws.postParameterEncoding = .JSON
+        Arrow.setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+        Arrow.setUseTimeIntervalSinceReferenceDate(true)
         
         // Load saved exercises from API
         Exercise.list().then { loadedExercises in
