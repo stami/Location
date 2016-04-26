@@ -2,9 +2,9 @@
 
 > The Tracker App
 
-Track your exercise with this magical GPS tracker! Functionality like never before! :]
-
 School assignment for mobile programming course at Tampere University of Applied Sciences.
+
+Track your exercise with this magical GPS tracker! Functionality like never before! :]
 
 ## Things to expect
 
