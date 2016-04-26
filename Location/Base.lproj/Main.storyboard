@@ -128,7 +128,7 @@
                     <navigationItem key="navigationItem" title="Location" id="Yi2-gl-lEU">
                         <barButtonItem key="leftBarButtonItem" title="Map" id="AfZ-9P-gGY">
                             <connections>
-                                <segue destination="XyY-P0-2rQ" kind="presentation" id="Yec-fe-nUu"/>
+                                <segue destination="XyY-P0-2rQ" kind="presentation" identifier="fromTrackerToMapSegue" id="Yec-fe-nUu"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="bookmarks" id="uuh-yP-zcX">
@@ -239,7 +239,7 @@
                     <navigationItem key="navigationItem" title="Map" id="eAl-CW-PEK">
                         <barButtonItem key="leftBarButtonItem" systemItem="done" id="dsg-Ry-SJB">
                             <connections>
-                                <segue destination="var-j6-59E" kind="unwind" unwindAction="unwindToTrackerViewController:" id="XMF-ND-9j0"/>
+                                <action selector="prepareForUnwind:" destination="HP5-Xw-mZM" id="OND-7Z-v3e"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="◉ Follow" id="UC4-GV-yJ0">
@@ -251,12 +251,14 @@
                     <connections>
                         <outlet property="followMeButton" destination="UC4-GV-yJ0" id="G2U-ek-pXV"/>
                         <outlet property="mapView" destination="QTi-SD-qrA" id="bC4-T0-leL"/>
+                        <segue destination="var-j6-59E" kind="unwind" identifier="unwindToTrackerViewController" unwindAction="unwindToTrackerViewController:" id="aIM-aD-3Fl"/>
+                        <segue destination="var-j6-59E" kind="unwind" identifier="unwindToDetailsViewController" unwindAction="unwindToDetailsViewController:" id="OHE-wk-EZp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="a0L-Tv-03K" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="var-j6-59E" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1305" y="1015"/>
+            <point key="canvasLocation" x="1305" y="1033"/>
         </scene>
         <!--20.04.2016-->
         <scene sceneID="pyG-C5-PNd">
@@ -327,7 +329,13 @@
                             <constraint firstAttribute="leadingMargin" secondItem="vwp-R8-aGu" secondAttribute="leading" id="XKI-fA-3KW"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="20.04.2016" id="cRf-v9-l93"/>
+                    <navigationItem key="navigationItem" title="20.04.2016" id="cRf-v9-l93">
+                        <barButtonItem key="rightBarButtonItem" title="Map" id="GvK-Wq-j00">
+                            <connections>
+                                <segue destination="XyY-P0-2rQ" kind="presentation" identifier="fromDetailsToMapSegue" id="53j-Bm-acE"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="averageSpeedLabel" destination="rwW-qa-Ryl" id="6pi-Bq-0wj"/>
                         <outlet property="totalDistanceLabel" destination="Ih1-HO-Geo" id="Q3p-Fc-cKz"/>
@@ -372,7 +380,10 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MsQ-WI-c56" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="851" y="1015"/>
+            <point key="canvasLocation" x="877" y="1033"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="53j-Bm-acE"/>
+    </inferredMetricsTieBreakers>
 </document>

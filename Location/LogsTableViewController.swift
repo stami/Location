@@ -24,7 +24,7 @@ class LogsTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier("ExerciseLogCell", forIndexPath: indexPath) as! ExerciseLogTableViewCell
         
         let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yyyy"
+        dateFormatter.dateFormat = "EEEE dd.MM.yyyy"
         
         let dateString = dateFormatter.stringFromDate(savedExercises[indexPath.row].startingDate)
         
@@ -49,8 +49,6 @@ class LogsTableViewController: UITableViewController {
 
     
     // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
         if segue.identifier == "showExerciseDetailsSegue" {
@@ -58,8 +56,7 @@ class LogsTableViewController: UITableViewController {
             
             if let selectedCell = sender as? ExerciseLogTableViewCell {
                 let indexPath = tableView.indexPathForCell(selectedCell)!
-                let selectedExercise: Exercise = savedExercises[indexPath.row]
-                detailViewController.exercise = selectedExercise
+                currentExercise = savedExercises[indexPath.row]
             }
         }
         

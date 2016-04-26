@@ -23,9 +23,6 @@ class TrackerViewController: UIViewController {
     
     let stopwatch = Stopwatch()
     var isTracking: Bool = false
-
-    var distance: CLLocationDistance = 0
-    var averageSpeed: Double = 0
     var currentSpeed: Double = 0
     
     @IBOutlet weak var badSignalLabel: UILabel!
@@ -87,10 +84,8 @@ class TrackerViewController: UIViewController {
     }
     
     func resetExercise() {
-        currentExerciseLocations.removeAll()
+        currentExercise = Exercise()
         currentSpeed = 0
-        distance = 0
-        averageSpeed = 0
         currentSpeedLabel.text = "0.0"
         distanceLabel.text = "0.0"
         averageSpeedLabel.text = "0.0"
@@ -108,26 +103,29 @@ class TrackerViewController: UIViewController {
     }
     
     func saveExercise() {
-        if currentExerciseLocations.isEmpty {
-            print("No locations tracked.")
+        if currentExercise.trace.isEmpty {
+            print("Nothing tracked.")
             return
         }
         
-        // Create simplified locations
-        var locations = [Location]()
-        for loc in currentExerciseLocations {
-            locations.append(Location(latitude: loc.coordinate.latitude, longitude: loc.coordinate.longitude, timestamp: loc.timestamp))
-        }
+        // TODO: get description from user
         
-        let newExercise = Exercise(_id: "", startingDate: locations.first!.timestamp, totalDistance: distance, averageSpeed: averageSpeed, description: "Kivaa juoksua", trace: locations)
-        
-        newExercise.save().then() { createdExercise in
+        currentExercise.save().then() { createdExercise in
             savedExercises.append(createdExercise)
         }
     }
     
     
     // MARK: - Navigation
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "fromTrackerToMapSegue" {
+            if let navigationVC = segue.destinationViewController as? UINavigationController,
+                let destination = navigationVC.topViewController as? MapViewController {
+                destination.unwindDestination = "TrackerViewController"
+            }
+        }
+    }
+
     @IBAction func unwindToTrackerViewController(segue:UIStoryboardSegue) {
         //print("unwindToTrackerViewController")
     }
@@ -153,19 +151,18 @@ extension TrackerViewController: CLLocationManagerDelegate {
                 
                 if isTracking {
                     // Update current values
-                    if currentExerciseLocations.count > 0 {
-                        distance += location.distanceFromLocation(currentExerciseLocations.last!)
-                        distanceLabel.text = String(format: "%.2f", distance/1000) // meters to kilometers
+                    if currentExercise.trace.count > 0 {
+                        currentExercise.totalDistance += location.distanceFromLocation(currentExercise.trace.last!.toCLLocation())
+                        distanceLabel.text = String(format: "%.2f", currentExercise.totalDistance/1000) // meters to kilometers
                         
-                        averageSpeed = distance / (location.timestamp.timeIntervalSince1970 - currentExerciseLocations.first!.timestamp.timeIntervalSince1970)
-                        averageSpeedLabel.text = String(format: "%.1f", averageSpeed*3.6) // m/s to km/h
+                        currentExercise.averageSpeed = currentExercise.totalDistance / -currentExercise.trace.first!.timestamp.timeIntervalSinceNow
+                        averageSpeedLabel.text = String(format: "%.1f", currentExercise.averageSpeed*3.6) // m/s to km/h
                         
-                        currentSpeed = speed(currentExerciseLocations.last!, current: location)
+                        currentSpeed = speed(currentExercise.trace.last!.toCLLocation(), current: location)
                         currentSpeedLabel.text = String(format: "%.1f", currentSpeed*3.6) // m/s to km/h
                     }
-                    
                     // Append location
-                    currentExerciseLocations.append(location)
+                    currentExercise.trace.append(Location(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude, timestamp: location.timestamp))
                 }
                 
                 // We have good accuracy, let's clear the warning

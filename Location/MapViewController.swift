@@ -14,6 +14,15 @@ class MapViewController: UIViewController {
 
     @IBOutlet weak var mapView: MKMapView!
     
+    var unwindDestination: String? // Where we came here
+    @IBAction func prepareForUnwind(sender: UIBarButtonItem) {
+        if unwindDestination == "LogDetailsViewController" {
+            self.performSegueWithIdentifier("unwindToDetailsViewController", sender: self)
+        } else if unwindDestination == "TrackerViewController" {
+            self.performSegueWithIdentifier("unwindToTrackerViewController", sender: self)
+        }
+    }
+    
     @IBOutlet weak var followMeButton: UIBarButtonItem!
     @IBAction func followMeButtonPressed(sender: UIBarButtonItem) {
         toggleFollowMe()
@@ -35,14 +44,14 @@ class MapViewController: UIViewController {
     func initMap() {
         mapView.showsUserLocation = true
         
-        if currentExerciseLocations.count > 0 {
+        if currentExercise.trace.count > 0 {
             mapView.setRegion(mapRegion(true), animated: false) // Set region only first time
             mapView.addOverlay(polyline())
         }
     }
     
     func updateMap(timer: NSTimer) {
-        if currentExerciseLocations.count > 0 {
+        if currentExercise.trace.count > 0 {
             if followMe {
                 mapView.setRegion(mapRegion(false), animated: true)
             }
@@ -53,7 +62,7 @@ class MapViewController: UIViewController {
     
     func mapRegion(showAll: Bool) -> MKCoordinateRegion {
         if showAll {
-            let initialLoc: CLLocation = currentExerciseLocations.first!
+            let initialLoc: CLLocation = currentExercise.trace.first!.toCLLocation()
             
             var minLat = initialLoc.coordinate.latitude
             var minLon = initialLoc.coordinate.longitude
@@ -61,11 +70,12 @@ class MapViewController: UIViewController {
             var maxLon = minLon
             
             // Get the min and max coordinates
-            for location in currentExerciseLocations {
-                minLat = min(minLat, location.coordinate.latitude)
-                minLon = min(minLon, location.coordinate.longitude)
-                maxLat = max(maxLat, location.coordinate.latitude)
-                maxLon = max(maxLon, location.coordinate.longitude)
+            for location in currentExercise.trace {
+                let cLLoc = location.toCLLocation()
+                minLat = min(minLat, cLLoc.coordinate.latitude)
+                minLon = min(minLon, cLLoc.coordinate.longitude)
+                maxLat = max(maxLat, cLLoc.coordinate.latitude)
+                maxLon = max(maxLon, cLLoc.coordinate.longitude)
             }
             
             debugPrint(MKCoordinateSpan(latitudeDelta: (maxLat - minLat)*1.1, longitudeDelta: (maxLon - minLon)*1.1))
@@ -77,7 +87,7 @@ class MapViewController: UIViewController {
                     longitudeDelta: (maxLon - minLon)*1.1))
         } else {
             return MKCoordinateRegion(
-                center: currentExerciseLocations.last!.coordinate,
+                center: currentExercise.trace.last!.toCLLocation().coordinate,
                 span: MKCoordinateSpan(latitudeDelta: 0.002, longitudeDelta: 0.002)
             )
         }
@@ -86,15 +96,14 @@ class MapViewController: UIViewController {
     
     func polyline() -> MKPolyline {
         var coords = [CLLocationCoordinate2D]()
-        for location in currentExerciseLocations {
-            coords.append(location.coordinate)
+        for location in currentExercise.trace {
+            coords.append(location.toCLLocation().coordinate)
         }
-        return MKPolyline(coordinates: &coords, count: currentExerciseLocations.count)
+        return MKPolyline(coordinates: &coords, count: currentExercise.trace.count)
     }
     
     
     func toggleFollowMe() {
-        "◉◎ Follow"
         if followMe {
             followMeButton.title = "◎ Follow"
             followMe = false

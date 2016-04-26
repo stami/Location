@@ -15,7 +15,7 @@ import Arrow
 import then
 
 var savedExercises = [Exercise]()
-var currentExerciseLocations = [CLLocation]()
+var currentExercise = Exercise()
 
 // I use mlab.com Data API for testing purposes
 // see http://docs.mlab.com/data-api/
@@ -96,6 +96,12 @@ struct Location {
     var latitude: Double = 0
     var longitude: Double = 0
     var timestamp: NSDate = NSDate()
+}
+
+extension Location {
+    func toCLLocation() -> CLLocation {
+        return CLLocation(coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), altitude: 1, horizontalAccuracy: 1, verticalAccuracy: 1, timestamp: timestamp)
+    }
 }
 
 extension Location : ArrowParsable {

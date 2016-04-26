@@ -10,23 +10,19 @@ import UIKit
 
 class LogDetailsViewController: UIViewController {
     
-    var exercise: Exercise?
-
     @IBOutlet weak var totalDistanceLabel: UILabel!
     @IBOutlet weak var averageSpeedLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if let exercise = exercise {
-            let dateFormatter = NSDateFormatter()
-            dateFormatter.dateFormat = "dd.MM.yyyy"
-            navigationItem.title = dateFormatter.stringFromDate(exercise.startingDate)
-            
-            totalDistanceLabel.text = String(format: "%.2f", exercise.totalDistance) + " m"
-            averageSpeedLabel.text = String(format: "%.2f", exercise.averageSpeed) + " m/s"
-            
-        }
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "dd.MM.yyyy"
+        navigationItem.title = dateFormatter.stringFromDate(currentExercise.startingDate)
+        
+        totalDistanceLabel.text = String(format: "%.2f", currentExercise.totalDistance) + " m"
+        averageSpeedLabel.text = String(format: "%.2f", currentExercise.averageSpeed) + " m/s"
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -35,14 +31,19 @@ class LogDetailsViewController: UIViewController {
     }
     
 
-    /*
+    
     // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "fromDetailsToMapSegue" {
+            if let navigationVC = segue.destinationViewController as? UINavigationController,
+               let destination = navigationVC.topViewController as? MapViewController {
+                    destination.unwindDestination = "LogDetailsViewController"
+            }
+        }
     }
-    */
+    
+    @IBAction func unwindToDetailsViewController(segue:UIStoryboardSegue) {
+        //print("unwindToDetailsViewController")
+    }
 
 }
