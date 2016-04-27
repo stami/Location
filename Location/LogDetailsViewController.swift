@@ -18,10 +18,14 @@ class LogDetailsViewController: UIViewController {
     @IBOutlet weak var durationLabel: UILabel!
     @IBOutlet weak var commentTextField: UITextField!
     
-    // Chart Data
-    var distanceData = [Double]()
-    var timeData = [String]()
-    var speedData = [Double]()
+    // Filtered data
+    var fTrace = [Location]()
+    var fDistance = [Double]()
+    var fTime = [NSDate]()
+    var fChartLabels = [String]()
+    var fSpeed = [Double]()
+    
+    var speedDataEntries: [ChartDataEntry] = []
 
     
     override func viewDidLoad() {
@@ -36,7 +40,7 @@ class LogDetailsViewController: UIViewController {
         durationLabel.text = stringFromTimeInterval(currentExercise.trace.last!.timestamp.timeIntervalSinceDate(currentExercise.startingDate))
         commentTextField.text = currentExercise.description
         
-        getDataForChart()
+        filterData()
         setupChart()
     }
 
@@ -61,14 +65,7 @@ class LogDetailsViewController: UIViewController {
         lineChartView.drawBordersEnabled = true
         lineChartView.legend.enabled = false
         
-        var dataEntries: [ChartDataEntry] = []
-        
-        for i in 0..<distanceData.count {
-            let dataEntry = ChartDataEntry(value: speedData[i], xIndex: i)
-            dataEntries.append(dataEntry)
-        }
-        
-        let chartDataSet = LineChartDataSet(yVals: dataEntries, label: "Distance")
+        let chartDataSet = LineChartDataSet(yVals: speedDataEntries, label: "Speed")
         chartDataSet.axisDependency = .Left
         chartDataSet.colors = [UIColor(red: 0, green: 0.478, blue: 1, alpha: 1)]
         chartDataSet.drawCirclesEnabled = false
@@ -77,37 +74,76 @@ class LogDetailsViewController: UIViewController {
         chartDataSet.highlightEnabled = false
         
         
-        let chartData = LineChartData(xVals: timeData, dataSet: chartDataSet)
+        let chartData = LineChartData(xVals: fChartLabels, dataSet: chartDataSet)
         lineChartView.data = chartData
         
         lineChartView.animate(xAxisDuration: 1.0, yAxisDuration: 1.0)
         
-
     }
     
-    func getDataForChart() {
+    func filterData() {
         
-        distanceData.append(0)
-        timeData.append("0")
-        speedData.append(0)
+        let treshold = 0.0
+        var avgSpeed: Double = 0
+        let alpha: Double = 0.4
         
         let firstTimestamp: NSDate = currentExercise.trace.first!.timestamp
         
-        for i in 1..<currentExercise.trace.count {
+        fDistance.append(0)
+        fSpeed.append(0)
+        fTime.append(firstTimestamp)
+        fChartLabels.append("0")
+        
+        fTrace.append(currentExercise.trace.first!)
+        
+        let traceCount = currentExercise.trace.count
+        
+        for i in 1..<traceCount {
+            let loc = currentExercise.trace[i]
             
-            let older: CLLocation = currentExercise.trace[i-1].toCLLocation()
-            let latest: CLLocation = currentExercise.trace[i].toCLLocation()
+            let distanceFromLast = loc.toCLLocation().distanceFromLocation(fTrace.last!.toCLLocation())
+
+            // Skip location if distance is too low
+            // TODO: improve filtering...
+            if distanceFromLast < treshold {
+                print("Too short distance, skipping...")
+                continue
+            }
             
-            let distanceToOlder = latest.distanceFromLocation(older)
-            distanceData.append(distanceData[i-1] + distanceToOlder)
+            // Skip location if timestamp is same
+            if loc.timestamp == fTrace.last!.timestamp {
+                print("Same timestamp, skipping...")
+                continue
+            }
             
-            timeData.append(stringFromTimeInterval(latest.timestamp.timeIntervalSinceDate(firstTimestamp)))
+            // raw speed between two last locations
+            let speed: Double = distanceFromLast / loc.timestamp.timeIntervalSinceDate(fTrace.last!.timestamp) * 3.6
+            fSpeed.append(speed)
             
-            // TODO: fix issue when timeInterval is 0
-            // calculate some running average...
-            let speed: Double = distanceToOlder / latest.timestamp.timeIntervalSinceDate(older.timestamp) * 3.6
-            speedData.append(speed)
+            // Calculate exponential moving average of speed
+            avgSpeed = (alpha * speed) + (1.0 - alpha) * avgSpeed
+            let dataEntry = ChartDataEntry(value: avgSpeed, xIndex: i)
+            speedDataEntries.append(dataEntry)
+            
+            // Timestamp there must be
+            fTime.append(loc.timestamp)
+            let time = stringFromTimeInterval(loc.timestamp.timeIntervalSinceDate(fTrace.first!.timestamp))
+            fChartLabels.append(time)
+            
+            // Calculate total distance
+            let cumulativeDistance: Double = fDistance.last! + distanceFromLast
+            fDistance.append(cumulativeDistance)
+            // fChartLabels.append(stringFromDistance(cumulativeDistance))
+            
+            // Trace for MapView
+            fTrace.append(loc)
+            
+            // Do some tuning for the threshold
+            // treshold = 0.5*avgSpeed
         }
+        
+        // For MapView
+        currentExercise.trace = fTrace
     }
     
 

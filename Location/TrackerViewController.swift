@@ -32,7 +32,7 @@ class TrackerViewController: UIViewController {
         super.viewDidLoad()
         
         // Setup rest api parsing
-        ws.logLevels = .CallsAndResponses
+        //ws.logLevels = .CallsAndResponses
         ws.postParameterEncoding = .JSON
         Arrow.setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
         Arrow.setUseTimeIntervalSinceReferenceDate(true)
