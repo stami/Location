@@ -144,14 +144,19 @@ extension TrackerViewController: CLLocationManagerDelegate {
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         for location in locations {
-            // debugPrint(location)
-            
             if location.horizontalAccuracy < 20 {
-                //debugPrint(location)
-                
                 if isTracking {
+                    var locationIsChanged: Bool = true
+                    if let lastLocation = currentExercise.trace.last {
+                        let lastCoordinate = lastLocation.toCLLocation().coordinate
+                        if lastCoordinate.latitude != location.coordinate.latitude || lastCoordinate.longitude != location.coordinate.longitude {
+                            // Location is different from the previous saved one
+                            locationIsChanged = true
+                        }
+                    }
+                    
                     // Update current values
-                    if currentExercise.trace.count > 0 {
+                    if currentExercise.trace.count > 0 && locationIsChanged {
                         currentExercise.totalDistance += location.distanceFromLocation(currentExercise.trace.last!.toCLLocation())
                         distanceLabel.text = String(format: "%.2f", currentExercise.totalDistance/1000) // meters to kilometers
                         
@@ -161,8 +166,10 @@ extension TrackerViewController: CLLocationManagerDelegate {
                         currentSpeed = speed(currentExercise.trace.last!.toCLLocation(), current: location)
                         currentSpeedLabel.text = String(format: "%.1f", currentSpeed*3.6) // m/s to km/h
                     }
+                    
                     // Append location
                     currentExercise.trace.append(Location(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude, timestamp: location.timestamp))
+                    locationIsChanged = false
                 }
                 
                 // We have good accuracy, let's clear the warning
