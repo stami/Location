@@ -19,3 +19,10 @@ func stringFromTimeInterval(interval: NSTimeInterval) -> String {
     }
     return String(format: "%0.2d:%0.2d", minutes, seconds)
 }
+
+func stringFromDistance(distance: Double) -> String {
+    if distance < 1000 {
+        return String(format: "%.0f m", distance)
+    }
+    return String(format: "%0.2f km", distance/1000)
+}

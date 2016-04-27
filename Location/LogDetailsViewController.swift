@@ -31,8 +31,8 @@ class LogDetailsViewController: UIViewController {
         dateFormatter.dateFormat = "dd.MM.yyyy"
         navigationItem.title = dateFormatter.stringFromDate(currentExercise.startingDate)
         
-        totalDistanceLabel.text = String(format: "%.2f", currentExercise.totalDistance) + " m"
-        averageSpeedLabel.text = String(format: "%.2f", currentExercise.averageSpeed) + " m/s"
+        totalDistanceLabel.text = stringFromDistance(currentExercise.totalDistance)
+        averageSpeedLabel.text = String(format: "%.2f", currentExercise.averageSpeed * 3.6) + " km/h"
         durationLabel.text = stringFromTimeInterval(currentExercise.trace.last!.timestamp.timeIntervalSinceDate(currentExercise.startingDate))
         commentTextField.text = currentExercise.description
         
@@ -64,7 +64,7 @@ class LogDetailsViewController: UIViewController {
         var dataEntries: [ChartDataEntry] = []
         
         for i in 0..<distanceData.count {
-            let dataEntry = ChartDataEntry(value: distanceData[i], xIndex: i)
+            let dataEntry = ChartDataEntry(value: speedData[i], xIndex: i)
             dataEntries.append(dataEntry)
         }
         
@@ -105,7 +105,7 @@ class LogDetailsViewController: UIViewController {
             
             // TODO: fix issue when timeInterval is 0
             // calculate some running average...
-            let speed: Double = distanceToOlder / latest.timestamp.timeIntervalSinceDate(older.timestamp)
+            let speed: Double = distanceToOlder / latest.timestamp.timeIntervalSinceDate(older.timestamp) * 3.6
             speedData.append(speed)
         }
     }

@@ -29,7 +29,7 @@ class LogsTableViewController: UITableViewController {
         let dateString = dateFormatter.stringFromDate(savedExercises[indexPath.row].startingDate)
         
         cell.dateLabel.text = dateString
-        cell.distanceLabel.text = String(format: "%.2f", savedExercises[indexPath.row].totalDistance / 1000) + " km"
+        cell.distanceLabel.text = stringFromDistance(savedExercises[indexPath.row].totalDistance)
 
         return cell
     }
