@@ -83,7 +83,8 @@ extension Exercise {
     }
     
     func update() -> Promise<Void> {
-        return ws.put("/\(_id!)"+apiKey, params: params())
+        // Only description should be updated
+        return ws.put("/\(_id!)"+apiKey, params: ["_id": _id!, "description": description])
     }
     
     func delete() -> Promise<Void> {

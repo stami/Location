@@ -15,6 +15,8 @@ class LogDetailsViewController: UIViewController {
     @IBOutlet weak var lineChartView: LineChartView!
     @IBOutlet weak var totalDistanceLabel: UILabel!
     @IBOutlet weak var averageSpeedLabel: UILabel!
+    @IBOutlet weak var durationLabel: UILabel!
+    @IBOutlet weak var commentTextField: UITextField!
     
     // Chart Data
     var distanceData = [Double]()
@@ -31,11 +33,23 @@ class LogDetailsViewController: UIViewController {
         
         totalDistanceLabel.text = String(format: "%.2f", currentExercise.totalDistance) + " m"
         averageSpeedLabel.text = String(format: "%.2f", currentExercise.averageSpeed) + " m/s"
+        durationLabel.text = stringFromTimeInterval(currentExercise.trace.last!.timestamp.timeIntervalSinceDate(currentExercise.startingDate))
+        commentTextField.text = currentExercise.description
         
         getDataForChart()
         setupChart()
     }
 
+    @IBAction func saveComment(sender: UITextField) {
+        if let comment = commentTextField.text {
+            currentExercise.description = comment
+        } else {
+            currentExercise.description = ""
+        }
+        currentExercise.update().then {
+            print(currentExercise)
+        }
+    }
 
 
     func setupChart() {
