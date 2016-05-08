@@ -108,11 +108,25 @@ class TrackerViewController: UIViewController {
             return
         }
         
-        // TODO: get description from user
-        
-        currentExercise.save().then() { createdExercise in
-            savedExercises.append(createdExercise)
-        }
+        // Get description from user
+        let alertController = UIAlertController(title: "Description", message: "Enter exercise description", preferredStyle: .Alert)
+        alertController.addTextFieldWithConfigurationHandler({ (textField: UITextField!) in
+                textField.placeholder = "Good cycling!"
+        })
+        let action = UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler: {
+            (UIAlertAction) in
+            if let description = alertController.textFields!.first!.text {
+                currentExercise.description = description
+                print(currentExercise)
+                
+                // Save new exercise with provided description
+                currentExercise.save().then() { createdExercise in
+                    savedExercises.append(createdExercise)
+                }
+            }
+        })
+        alertController.addAction(action)
+        self.presentViewController(alertController, animated: true, completion: nil)
     }
     
     
