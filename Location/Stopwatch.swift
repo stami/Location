@@ -33,7 +33,7 @@ class Stopwatch {
     }
     
     var elapsedAsString: String {
-        return String(format: "%02d:%02d:%02d", Int(elapsed / 3600), Int(elapsed / 60), Int(elapsed))
+        return stringFromTimeInterval(elapsed)
     }
     
     

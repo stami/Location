@@ -10,14 +10,14 @@ import Foundation
 
 func stringFromTimeInterval(interval: NSTimeInterval) -> String {
     
-    let seconds = Int(interval % 60)
+    let seconds = Int(round(interval % 60))
     let minutes = Int((interval / 60) % 60)
     let hours = Int(interval / 3600)
     
     if hours > 0 {
-        return String(format: "%0.2d:%0.2d:%0.2d", hours, minutes, seconds)
+        return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
     }
-    return String(format: "%0.2d:%0.2d", minutes, seconds)
+    return String(format: "%02d:%02d", minutes, seconds)
 }
 
 func stringFromDistance(distance: Double) -> String {
