@@ -9,9 +9,13 @@ Track your exercise with this magical GPS tracker! Functionality like never befo
 ## Things to expect
 
 - Rock solid GPS tracker that can really be used without crashing (maybe some day)
-- GPX export for more fun
 - Trace on map
 - Cool speed chart
+
+## Maybe in future
+
+- GPX export for good fun
+- External sensor support via BLE (bike cadence or something)
 
 With ❤️,
 Samuli
