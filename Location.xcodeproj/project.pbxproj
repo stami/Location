@@ -15,7 +15,6 @@
 		885566081CC805EA0055C15D /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885566071CC805EA0055C15D /* MapViewController.swift */; };
 		8855660A1CC8DDF80055C15D /* ws.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 885566091CC8DDF80055C15D /* ws.framework */; };
 		8889FFB71CCFE4CE0037BDC2 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8889FFB61CCFE4CE0037BDC2 /* Helpers.swift */; };
-		888A2E6C1CCF4B170028D4D4 /* ApiKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888A2E6B1CCF4B170028D4D4 /* ApiKeys.swift */; };
 		888A2E6E1CCF4E310028D4D4 /* ApiKeys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 888A2E6D1CCF4E310028D4D4 /* ApiKeys.plist */; };
 		88E448421CC650E900E34CC3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E448411CC650E900E34CC3 /* AppDelegate.swift */; };
 		88E448441CC650E900E34CC3 /* TrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E448431CC650E900E34CC3 /* TrackerViewController.swift */; };
@@ -45,7 +44,6 @@
 		885566071CC805EA0055C15D /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		885566091CC8DDF80055C15D /* ws.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ws.framework; path = Carthage/Build/iOS/ws.framework; sourceTree = "<group>"; };
 		8889FFB61CCFE4CE0037BDC2 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
-		888A2E6B1CCF4B170028D4D4 /* ApiKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiKeys.swift; sourceTree = "<group>"; };
 		888A2E6D1CCF4E310028D4D4 /* ApiKeys.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ApiKeys.plist; sourceTree = "<group>"; };
 		88E4483E1CC650E900E34CC3 /* Location.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Location.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		88E448411CC650E900E34CC3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -111,13 +109,12 @@
 				885566051CC7F70A0055C15D /* Stopwatch.swift */,
 				885565F91CC79C0D0055C15D /* Exercise.swift */,
 				885566031CC7BEC60055C15D /* ExerciseLogTableViewCell.swift */,
+				8889FFB61CCFE4CE0037BDC2 /* Helpers.swift */,
 				88E448481CC650E900E34CC3 /* Assets.xcassets */,
 				88E448411CC650E900E34CC3 /* AppDelegate.swift */,
 				88E4484A1CC650E900E34CC3 /* LaunchScreen.storyboard */,
 				88E4484D1CC650E900E34CC3 /* Info.plist */,
 				888A2E6D1CCF4E310028D4D4 /* ApiKeys.plist */,
-				888A2E6B1CCF4B170028D4D4 /* ApiKeys.swift */,
-				8889FFB61CCFE4CE0037BDC2 /* Helpers.swift */,
 			);
 			path = Location;
 			sourceTree = "<group>";
@@ -259,7 +256,6 @@
 			files = (
 				885566041CC7BEC60055C15D /* ExerciseLogTableViewCell.swift in Sources */,
 				885566001CC7B9A80055C15D /* LogsTableViewController.swift in Sources */,
-				888A2E6C1CCF4B170028D4D4 /* ApiKeys.swift in Sources */,
 				8889FFB71CCFE4CE0037BDC2 /* Helpers.swift in Sources */,
 				885566021CC7B9C50055C15D /* LogDetailsViewController.swift in Sources */,
 				88E448441CC650E900E34CC3 /* TrackerViewController.swift in Sources */,

@@ -14,7 +14,8 @@ class MapViewController: UIViewController {
 
     @IBOutlet weak var mapView: MKMapView!
     
-    var unwindDestination: String? // Where we came here
+    // Where we came here? From TrackerVC or from LogDetailsVC?
+    var unwindDestination: String?
     @IBAction func prepareForUnwind(sender: UIBarButtonItem) {
         if unwindDestination == "LogDetailsViewController" {
             self.performSegueWithIdentifier("unwindToDetailsViewController", sender: self)
@@ -23,9 +24,10 @@ class MapViewController: UIViewController {
         }
     }
     
+    // Should the map follow current location or should the map be freely spanned and zoomed?
     @IBOutlet weak var followMeButton: UIBarButtonItem!
     @IBAction func followMeButtonPressed(sender: UIBarButtonItem) {
-        toggleFollowMe()
+        followMe = !followMe
     }
     var followMe: Bool = true {
         didSet {
@@ -61,17 +63,20 @@ class MapViewController: UIViewController {
     func updateMap(timer: NSTimer) {
         if currentExercise.trace.count > 0 {
             if followMe {
+                // If following, set currently visible map area accordingly
                 mapView.setRegion(mapRegion(false), animated: true)
             }
+            // Draw updated line
             mapView.addOverlay(polyline())
         }
     }
     
-    
+    // Get proper visible map area
     func mapRegion(showAll: Bool) -> MKCoordinateRegion {
         if showAll {
-            let initialLoc: CLLocation = currentExercise.trace.first!.toCLLocation()
+            // Show the whole trace
             
+            let initialLoc: CLLocation = currentExercise.trace.first!.toCLLocation()
             var minLat = initialLoc.coordinate.latitude
             var minLon = initialLoc.coordinate.longitude
             var maxLat = minLat
@@ -86,14 +91,13 @@ class MapViewController: UIViewController {
                 maxLon = max(maxLon, cLLoc.coordinate.longitude)
             }
             
-            debugPrint(MKCoordinateSpan(latitudeDelta: (maxLat - minLat)*1.1, longitudeDelta: (maxLon - minLon)*1.1))
-            
             return MKCoordinateRegion(
                 center: CLLocationCoordinate2D(latitude: (minLat + maxLat)/2,
                     longitude: (minLon + maxLon)/2),
                 span: MKCoordinateSpan(latitudeDelta: (maxLat - minLat)*1.1,
                     longitudeDelta: (maxLon - minLon)*1.1))
         } else {
+            // Show current location with reasonable zoom level
             return MKCoordinateRegion(
                 center: currentExercise.trace.last!.toCLLocation().coordinate,
                 span: MKCoordinateSpan(latitudeDelta: 0.002, longitudeDelta: 0.002)
@@ -101,18 +105,13 @@ class MapViewController: UIViewController {
         }
     }
     
-    
+    // Return MKPolyline of all the tracked locations
     func polyline() -> MKPolyline {
         var coords = [CLLocationCoordinate2D]()
         for location in currentExercise.trace {
             coords.append(location.toCLLocation().coordinate)
         }
         return MKPolyline(coordinates: &coords, count: currentExercise.trace.count)
-    }
-    
-    
-    func toggleFollowMe() {
-        followMe = !followMe
     }
 
 }

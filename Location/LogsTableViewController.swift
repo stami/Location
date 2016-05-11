@@ -11,7 +11,6 @@ import UIKit
 class LogsTableViewController: UITableViewController {
     
     // MARK: - Table view data source
-
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
@@ -34,8 +33,7 @@ class LogsTableViewController: UITableViewController {
         return cell
     }
     
-    
-    // Override to support editing the table view.
+    // MARK: - Editing
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             savedExercises[indexPath.row].delete().then() {
@@ -46,14 +44,13 @@ class LogsTableViewController: UITableViewController {
         }
     }
     
-
     
     // MARK: - Navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        
-        if segue.identifier == "showExerciseDetailsSegue" {            
+        if segue.identifier == "showExerciseDetailsSegue" {
             if let selectedCell = sender as? ExerciseLogTableViewCell {
                 let indexPath = tableView.indexPathForCell(selectedCell)!
+                // Set the selected exercise to current exercise in order to use it in DetailsView and MapView
                 currentExercise = savedExercises[indexPath.row]
             }
         }

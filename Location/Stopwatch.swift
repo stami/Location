@@ -12,6 +12,7 @@ class Stopwatch {
     
     private var startTime: NSDate?
     
+    // Initialize timer. Set startTime to current time.
     func start() {
         startTime = NSDate()
     }
@@ -32,9 +33,9 @@ class Stopwatch {
         }
     }
     
+    // Return "(00:)00:00" formatted string (see Helpers.swift)
     var elapsedAsString: String {
         return stringFromTimeInterval(elapsed)
     }
-    
     
 }

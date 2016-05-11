@@ -25,14 +25,16 @@ class TrackerViewController: UIViewController {
     var isTracking: Bool = false
     var currentSpeed: Double = 0
     
+    // Used to inform user if GPS signal accuracy is too bad
     @IBOutlet weak var badSignalLabel: UILabel!
-    var badSignalCounter: Int = 0 // Used to inform user if GPS signal accuracy is too bad
+    var badSignalCounter: Int = 0
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Setup rest api parsing
-        //ws.logLevels = .CallsAndResponses
+        // ws.logLevels = .CallsAndResponses
         ws.postParameterEncoding = .JSON
         Arrow.setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
         Arrow.setUseTimeIntervalSinceReferenceDate(true)
@@ -49,6 +51,9 @@ class TrackerViewController: UIViewController {
         locationManager.requestAlwaysAuthorization()
     }
     
+    
+    
+    // MARK: - Start and Stop tracking
     @IBAction func startStopButtonPressed(sender: UIButton) {
         if !isTracking {
             resetExercise()
@@ -74,15 +79,6 @@ class TrackerViewController: UIViewController {
         stopwatch.stop()
     }
     
-    // Called each and every second to update timerLabel
-    func eachSecond(timer: NSTimer) {
-        if stopwatch.isRunning {
-            timerLabel.text = stopwatch.elapsedAsString
-        } else {
-            timer.invalidate()
-        }
-    }
-    
     func resetExercise() {
         currentExercise = Exercise()
         currentSpeed = 0
@@ -91,16 +87,15 @@ class TrackerViewController: UIViewController {
         averageSpeedLabel.text = "0.0"
     }
     
-    // Get speed between two locations
-    func speed(previous: CLLocation, current: CLLocation) -> Double {
-        let distance = previous.distanceFromLocation(current)
-        let time = previous.timestamp.timeIntervalSince1970 - current.timestamp.timeIntervalSince1970
-        if time != 0 {
-            return abs(distance/time)
+    // Update timerLabel
+    func eachSecond(timer: NSTimer) {
+        if stopwatch.isRunning {
+            timerLabel.text = stopwatch.elapsedAsString
         } else {
-            return 0
+            timer.invalidate()
         }
     }
+    
     
     func saveExercise() {
         if currentExercise.trace.isEmpty {
@@ -108,7 +103,7 @@ class TrackerViewController: UIViewController {
             return
         }
         
-        // Get description from user
+        // Get Exercise description from user
         let alertController = UIAlertController(title: "Description", message: "Enter exercise description", preferredStyle: .Alert)
         alertController.addTextFieldWithConfigurationHandler({ (textField: UITextField!) in
                 textField.placeholder = "Good cycling!"
@@ -130,6 +125,7 @@ class TrackerViewController: UIViewController {
     }
     
     
+    
     // MARK: - Navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "fromTrackerToMapSegue" {
@@ -144,57 +140,71 @@ class TrackerViewController: UIViewController {
         //print("unwindToTrackerViewController")
     }
     
+    
+    
+    // MARK: - CLLocationManagerDelegate Helpers
+    func incrementBadSignalCounter() {
+        badSignalCounter += 1
+        if badSignalCounter > 5 {
+            badSignalLabel.hidden = false // 5 bad locations in row needed to show the warning
+        }
+    }
+    
+    func clearBadSignalWarning() {
+        badSignalCounter = 0
+        badSignalLabel.hidden = true
+    }
+    
+    func speed(previous: CLLocation, current: CLLocation) -> Double {
+        let distance = previous.distanceFromLocation(current)
+        let time = previous.timestamp.timeIntervalSince1970 - current.timestamp.timeIntervalSince1970
+        if time != 0 {
+            return abs(distance/time)
+        } else {
+            return 0
+        }
+    }
+    
+    func updateExerciseStats(location: CLLocation) {
+        if !currentExercise.trace.isEmpty {
+            currentExercise.totalDistance += location.distanceFromLocation(currentExercise.trace.last!.toCLLocation())
+            distanceLabel.text = String(format: "%.2f", currentExercise.totalDistance/1000) // m to km
+        
+            currentExercise.averageSpeed = currentExercise.totalDistance / -currentExercise.trace.first!.timestamp.timeIntervalSinceNow
+            averageSpeedLabel.text = String(format: "%.1f", currentExercise.averageSpeed*3.6) // m/s to km/h
+        
+            currentSpeed = speed(currentExercise.trace.last!.toCLLocation(), current: location)
+            currentSpeedLabel.text = String(format: "%.1f", currentSpeed*3.6) // m/s to km/h
+        }
+    }
+    
+    func appendNewLocation(location: CLLocation) {
+        currentExercise.trace.append(Location(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude, timestamp: location.timestamp))
+    }
 
 }
 
 // MARK: - CLLocationManagerDelegate
 extension TrackerViewController: CLLocationManagerDelegate {
     
+    // Wait for user to authorize location services
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         if status == .AuthorizedAlways || status == .AuthorizedWhenInUse {
             locationManager.startUpdatingLocation()
         }
     }
     
+    // Called when new location is received
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        for location in locations {
-            if location.horizontalAccuracy < 20 {
+        if let latestLocation = locations.last {
+            if latestLocation.horizontalAccuracy < 20 {
                 if isTracking {
-                    var locationIsChanged: Bool = true
-                    if let lastLocation = currentExercise.trace.last {
-                        let lastCoordinate = lastLocation.toCLLocation().coordinate
-                        if lastCoordinate.latitude != location.coordinate.latitude || lastCoordinate.longitude != location.coordinate.longitude {
-                            // Location is different from the previous saved one
-                            locationIsChanged = true
-                        }
-                    }
-                    
-                    // Update current values
-                    if currentExercise.trace.count > 0 && locationIsChanged {
-                        currentExercise.totalDistance += location.distanceFromLocation(currentExercise.trace.last!.toCLLocation())
-                        distanceLabel.text = String(format: "%.2f", currentExercise.totalDistance/1000) // meters to kilometers
-                        
-                        currentExercise.averageSpeed = currentExercise.totalDistance / -currentExercise.trace.first!.timestamp.timeIntervalSinceNow
-                        averageSpeedLabel.text = String(format: "%.1f", currentExercise.averageSpeed*3.6) // m/s to km/h
-                        
-                        currentSpeed = speed(currentExercise.trace.last!.toCLLocation(), current: location)
-                        currentSpeedLabel.text = String(format: "%.1f", currentSpeed*3.6) // m/s to km/h
-                    }
-                    
-                    // Append location
-                    currentExercise.trace.append(Location(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude, timestamp: location.timestamp))
-                    locationIsChanged = false
+                    updateExerciseStats(latestLocation)
+                    appendNewLocation(latestLocation)
                 }
-                
-                // We have good accuracy, let's clear the warning
-                badSignalCounter = 0
-                badSignalLabel.hidden = true
+                clearBadSignalWarning()
             } else {
-                badSignalCounter += 1
-                if badSignalCounter > 5 {
-                    // 5 bad locations in row needed to show the warning
-                    badSignalLabel.hidden = false
-                }
+                incrementBadSignalCounter()
             }
         }
     }

@@ -14,8 +14,8 @@ import Alamofire
 import Arrow
 import then
 
-var savedExercises = [Exercise]()
-var currentExercise = Exercise()
+var savedExercises = [Exercise]() // Will be populated from API
+var currentExercise = Exercise()  // Will hold the current exercise (during tracking or previously saved one)
 
 // I use mlab.com Data API for testing purposes
 // see http://docs.mlab.com/data-api/
@@ -23,7 +23,9 @@ var currentExercise = Exercise()
 let apiUrl = valueForAPIKey("API_BASE_URL")
 let apiKey = "?apiKey=" + valueForAPIKey("API_KEY")
 
+// Use ws (https://github.com/s4cha/ws) for easy API usage
 let ws = WS(apiUrl)
+
 
 struct Exercise {
     
@@ -37,6 +39,7 @@ struct Exercise {
     
     var trace: [Location] = []
     
+    // Return key-value array for API POST parameter
     func params() -> [String:AnyObject] {
         
         // Dates to JSON
@@ -44,7 +47,6 @@ struct Exercise {
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         
         var paramTrace: [[String:AnyObject]] = []
-        
         for location in trace {
             paramTrace.append(["latitude": location.latitude, "longitude": location.longitude, "timestamp": dateFormatter.stringFromDate(location.timestamp)])
         }
@@ -60,8 +62,8 @@ struct Exercise {
     
 }
 
+// Defines how to map JSON to Swift object (required by ws)
 extension Exercise : ArrowParsable {
-    
     mutating func deserialize(json: JSON) {
         _id <-- json["_id.$oid"]
         startingDate <-- json["startingDate"]
@@ -70,9 +72,9 @@ extension Exercise : ArrowParsable {
         description <-- json["description"]
         trace <-- json["trace"]
     }
-
 }
 
+// API methods
 extension Exercise {
     static func list() -> Promise<[Exercise]> {
         return ws.get("/"+apiKey)

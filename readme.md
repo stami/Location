@@ -8,10 +8,10 @@ Track your exercise with this magical GPS tracker! Functionality like never befo
 
 ## Things to expect
 
-- Rock solid GPS tracker that can really be used without crashing
+- Rock solid GPS tracker that can really be used without crashing (maybe some day)
 - GPX export for more fun
 - Trace on map
-- Cool charts of the data
+- Cool speed chart
 
 With ❤️,
 Samuli
