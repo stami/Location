@@ -18,14 +18,9 @@ class LogDetailsViewController: UIViewController {
     @IBOutlet weak var durationLabel: UILabel!
     @IBOutlet weak var commentTextField: UITextField!
     
-    // Filtered data
-    var fTrace = [Location]()
-    var fDistance = [Double]()
-    var fTime = [NSDate]()
-    var fChartLabels = [String]()
-    var fSpeed = [Double]()
-    
-    var speedDataEntries: [ChartDataEntry] = []
+    // Data for chart
+    var chartLabels = [String]()
+    var chartDataEntries: [ChartDataEntry] = []
 
     
     override func viewDidLoad() {
@@ -40,22 +35,15 @@ class LogDetailsViewController: UIViewController {
         durationLabel.text = stringFromTimeInterval(currentExercise.trace.last!.timestamp.timeIntervalSinceDate(currentExercise.startingDate))
         commentTextField.text = currentExercise.description
         
-        filterData()
+        //filterData()
+        processDataForChart()
         setupChart()
     }
 
-    @IBAction func saveComment(sender: UITextField) {
-        if let comment = commentTextField.text {
-            currentExercise.description = comment
-        } else {
-            currentExercise.description = ""
-        }
-        currentExercise.update().then {
-            print(currentExercise)
-        }
-    }
 
-
+    // MARK: - Chart
+    
+    // Setup Chart styling and show data
     func setupChart() {
 
         lineChartView.descriptionText = ""
@@ -65,7 +53,7 @@ class LogDetailsViewController: UIViewController {
         lineChartView.drawBordersEnabled = true
         lineChartView.legend.enabled = false
         
-        let chartDataSet = LineChartDataSet(yVals: speedDataEntries, label: "Speed")
+        let chartDataSet = LineChartDataSet(yVals: chartDataEntries, label: "Speed")
         chartDataSet.axisDependency = .Left
         chartDataSet.colors = [UIColor(red: 0, green: 0.478, blue: 1, alpha: 1)]
         chartDataSet.drawCirclesEnabled = false
@@ -74,13 +62,45 @@ class LogDetailsViewController: UIViewController {
         chartDataSet.highlightEnabled = false
         
         
-        let chartData = LineChartData(xVals: fChartLabels, dataSet: chartDataSet)
+        let chartData = LineChartData(xVals: chartLabels, dataSet: chartDataSet)
         lineChartView.data = chartData
         
         lineChartView.animate(xAxisDuration: 1.0, yAxisDuration: 1.0)
         
     }
     
+    // Process trace data for Chart
+    // After this,
+    // chartDataEntries contains data entries to display
+    // and
+    // chartLabels contains labels for those data entries
+    func processDataForChart() {
+        
+        var lastValidLocation = currentExercise.trace.first!
+        let firstLocation = lastValidLocation
+        
+        for i in 1..<currentExercise.trace.count {
+            let loc = currentExercise.trace[i]
+            
+            // Skip location if timestamp is same (should not be issue with new trackings)
+            if loc.timestamp == lastValidLocation.timestamp {
+                print("Same timestamp, skipping...")
+                continue
+            }
+            
+            let distanceFromLast = loc.toCLLocation().distanceFromLocation(lastValidLocation.toCLLocation())
+            let speed: Double = distanceFromLast / loc.timestamp.timeIntervalSinceDate(lastValidLocation.timestamp) * 3.6
+            chartDataEntries.append(ChartDataEntry(value: speed, xIndex: i))
+            
+            // Elapsed time from start
+            let time = stringFromTimeInterval(loc.timestamp.timeIntervalSinceDate(firstLocation.timestamp))
+            chartLabels.append(time)
+            
+            lastValidLocation = loc
+        }
+    }
+    
+    // Experiemental function to filter chart data
     func filterData() {
         
         let treshold = 0.0
@@ -89,11 +109,17 @@ class LogDetailsViewController: UIViewController {
         
         let firstTimestamp: NSDate = currentExercise.trace.first!.timestamp
         
+        var fTrace = [Location]()
+        var fDistance = [Double]()
+        var fTime = [NSDate]()
+        var fSpeed = [Double]()
+        var fChartLabels = [String]()
+        var fChartDataEntries = [ChartDataEntry]()
+        
         fDistance.append(0)
         fSpeed.append(0)
         fTime.append(firstTimestamp)
         fChartLabels.append("0")
-        
         fTrace.append(currentExercise.trace.first!)
         
         let traceCount = currentExercise.trace.count
@@ -104,7 +130,6 @@ class LogDetailsViewController: UIViewController {
             let distanceFromLast = loc.toCLLocation().distanceFromLocation(fTrace.last!.toCLLocation())
 
             // Skip location if distance is too low
-            // TODO: improve filtering...
             if distanceFromLast < treshold {
                 print("Too short distance, skipping...")
                 continue
@@ -123,7 +148,7 @@ class LogDetailsViewController: UIViewController {
             // Calculate exponential moving average of speed
             avgSpeed = (alpha * speed) + (1.0 - alpha) * avgSpeed
             let dataEntry = ChartDataEntry(value: avgSpeed, xIndex: i)
-            speedDataEntries.append(dataEntry)
+            fChartDataEntries.append(dataEntry)
             
             // Timestamp there must be
             fTime.append(loc.timestamp)
@@ -142,8 +167,9 @@ class LogDetailsViewController: UIViewController {
             // treshold = 0.5*avgSpeed
         }
         
-        // For MapView
-        currentExercise.trace = fTrace
+        chartDataEntries = fChartDataEntries
+        chartLabels = fChartLabels
+        currentExercise.trace = fTrace // For MapView
     }
     
 
