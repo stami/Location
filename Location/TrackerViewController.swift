@@ -18,12 +18,22 @@ class TrackerViewController: UIViewController {
     @IBOutlet weak var averageSpeedLabel: UILabel!
     
     @IBOutlet weak var startStopButton: UIButton!
+    @IBOutlet weak var logsBarButtonItem: UIBarButtonItem!
     
     var locationManager: CLLocationManager = CLLocationManager()
     
     let stopwatch = Stopwatch()
-    var isTracking: Bool = false
     var currentSpeed: Double = 0
+    
+    var isTracking: Bool = false {
+        didSet {
+            if isTracking {
+                logsBarButtonItem.enabled = false
+            } else {
+                logsBarButtonItem.enabled = true
+            }
+        }
+    }
     
     // Used to inform user if GPS signal accuracy is too bad
     @IBOutlet weak var badSignalLabel: UILabel!

@@ -143,6 +143,7 @@
                         <outlet property="badSignalLabel" destination="PAM-b4-d9t" id="T74-1B-RfI"/>
                         <outlet property="currentSpeedLabel" destination="dG6-on-EK0" id="nG3-Sl-jcf"/>
                         <outlet property="distanceLabel" destination="gsN-kW-0eg" id="Ocg-ZH-0Y2"/>
+                        <outlet property="logsBarButtonItem" destination="uuh-yP-zcX" id="JZJ-Qh-XLh"/>
                         <outlet property="startStopButton" destination="Yyb-Yy-CHU" id="ZcA-ev-4Zm"/>
                         <outlet property="timerLabel" destination="VaD-XE-mrt" id="ABA-PO-mHE"/>
                     </connections>
@@ -416,6 +417,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="53j-Bm-acE"/>
+        <segue reference="Yec-fe-nUu"/>
     </inferredMetricsTieBreakers>
 </document>
