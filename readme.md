@@ -46,3 +46,10 @@ Create ApiKeys.plist file
 I use [mLab](https://mlab.com)'s free MongoDB Sandbox with their [RESTful Data API](http://docs.mlab.com/data-api/)
 
 Then just build and run! 🏃
+
+
+## Screenshots
+
+<img src="./screenshots/screenshot_tracking.png" style="width: 30%" />
+<img src="./screenshots/screenshot_map_in_tracking.png" style="width: 30%" />
+<img src="./screenshots/screenshot_chart.png" style="width: 30%" />
