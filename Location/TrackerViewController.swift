@@ -95,6 +95,7 @@ class TrackerViewController: UIViewController {
         currentSpeedLabel.text = "0.0"
         distanceLabel.text = "0.0"
         averageSpeedLabel.text = "0.0"
+        timerLabel.text = "00:00"
     }
     
     // Update timerLabel
