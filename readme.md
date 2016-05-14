@@ -50,6 +50,6 @@ Then just build and run! 🏃
 
 ## Screenshots
 
-<img src="./screenshots/screenshot_tracking.png" style="width: 30%" />
-<img src="./screenshots/screenshot_map_in_tracking.png" style="width: 30%" />
-<img src="./screenshots/screenshot_chart.png" style="width: 30%" />
+<img src="./screenshots/screenshot_tracking.png" width="250" />
+<img src="./screenshots/screenshot_map_in_tracking.png" width="250" />
+<img src="./screenshots/screenshot_chart.png" width="250" />
